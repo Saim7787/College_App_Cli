@@ -22,9 +22,7 @@ const Index = () => {
         </View>
         <Text style={[styles.profile_name, { color: theme.primaryText }]}>  James S. Hernandez </Text>
         <Text style={[styles.profile_mail, { color: theme.PrimarylightText }]}> hernandex.redial@gmail.ac.in </Text>
-
-      <StudentProfile />;
-    
+        <StudentProfile />
     
     </View>
   );

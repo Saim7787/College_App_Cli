@@ -8,10 +8,9 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 25,
-    paddingBottom:20
   },
   header: {
-    marginTop: 70,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -35,7 +34,7 @@ export const styles = StyleSheet.create({
   started_heading: {
     fontFamily: FONTFAMILY.Jost_SemiBold,
     fontSize: FONTSIZE.size_24,
-    marginTop: SPACING.space_36,
+    marginTop: SPACING.space_20,
   },
   started_SubHeading: {
     fontFamily: FONTFAMILY.Mulish_Bold,
@@ -43,7 +42,7 @@ export const styles = StyleSheet.create({
     marginTop: SPACING.space_8,
   },
   form_container: {
-    marginTop: SPACING.space_20,
+    marginTop: SPACING.space_16,
   },
   input_container: {
     flexDirection: 'row',
@@ -53,7 +52,7 @@ export const styles = StyleSheet.create({
   
     borderRadius: BORDERRADIUS.radius_12,
     paddingHorizontal: SPACING.space_18,
-    paddingVertical: SPACING.space_12,
+    paddingVertical: SPACING.space_2,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -144,7 +143,7 @@ flexDirection:'row',
 justifyContent:'center',
 alignItems:'center',
 gap:3,
-marginTop:SPACING.space_30
+marginTop:SPACING.space_10
 
   },
   already_account:{

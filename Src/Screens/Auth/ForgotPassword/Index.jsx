@@ -8,7 +8,7 @@ import FooterButton from '../../../Component/Footer Button/Index'
 const Index = () => {
     const themeContext = useContext(ThemeContext);
     const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
-    const [selectedItem, setSelectedItem] = useState<number | null>(null);
+    const [selectedItem, setSelectedItem] = useState(null);
     const handletoggletheme = themeContext?.toggleTheme;
     const handleSignUp = () => {
         // Logic for handling sign-up

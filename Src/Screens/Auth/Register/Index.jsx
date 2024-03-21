@@ -10,6 +10,7 @@ import { storeData } from '../../../Utility/Storage/Storage'
 import { setUserToken } from '../../../Features/Token'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().required('Password is required'),
@@ -45,7 +46,7 @@ const Index = ({navigation}) => {
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
+        <KeyboardAwareScrollView style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
           <View style={styles.header}>
             <Image source={require('../../../Assets/Auth/Register/logo.png')} style={styles.logo_image} />
             <View>
@@ -63,7 +64,7 @@ const Index = ({navigation}) => {
 
           <View style={styles.form_container}>
             {/* Email Input */}
-            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 30,  borderColor:errors.email && touched.email ? 'red': 'transparent',
+            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10,  borderColor:errors.email && touched.email ? 'red': 'transparent',
             borderWidth:1 }]}>
               <Image source={require('../../../Assets/Auth/Register/ICON.png')} style={styles.input_image} />
               <TextInput
@@ -79,7 +80,7 @@ const Index = ({navigation}) => {
             {errors.email && touched.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
             {/* Password Input */}
-            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 20,  borderColor:errors.password && touched.password ? 'red': 'transparent',
+            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10,  borderColor:errors.password && touched.password ? 'red': 'transparent',
             borderWidth:1 }]}>
               <Image source={require('../../../Assets/Auth/Register/Password.png')} style={styles.Password_input_image} />
               <TextInput
@@ -104,7 +105,7 @@ const Index = ({navigation}) => {
             </View>
             {errors.password && touched.password && <Text style={styles.errorText}>{errors.password}</Text>}
           
-            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 20,  borderColor:errors.ConfirmPassword && touched.ConfirmPassword ? 'red': 'transparent',
+            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 15,  borderColor:errors.ConfirmPassword && touched.ConfirmPassword ? 'red': 'transparent',
             borderWidth:1 }]}>
               <Image source={require('../../../Assets/Auth/Register/Password.png')} style={styles.Password_input_image} />
               <TextInput
@@ -156,7 +157,7 @@ const Index = ({navigation}) => {
             </TouchableOpacity>
 
           </View>
-          <View style={styles.sign_link}>
+          <View style={[styles.sign_link,{paddingBottom:"30"}]}>
             <Text style={[styles.already_account,{color:theme.PrimarylightText}]}>Already have an Account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>  
             <Text style={styles.Sign_in}>SIGN IN</Text>
@@ -166,7 +167,7 @@ const Index = ({navigation}) => {
         position='top'
         bottomOffset={20}
       />
-        </View>
+        </KeyboardAwareScrollView>
       )}
     </Formik>
   );

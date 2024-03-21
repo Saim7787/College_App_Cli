@@ -82,6 +82,24 @@ marginTop:SPACING.space_4,
     flexDirection:'row',
     justifyContent:'space-around',
     alignItems:'center'
-  }
+  },
+  notificationContainer: {
+    padding: 18,
+    borderWidth: 2,
+    borderColor: 'rgba(180, 189, 196, 0.20)',
+    marginBottom:12,
+    borderRadius:18,
+
+  },
+  title: {
+    fontSize: 18,
+ fontFamily:FONTFAMILY.Poppins_SemiBold,
+    marginBottom: 4,
+  },
+  description: {
+    fontSize: 14,
+    fontFamily:FONTFAMILY.Mulish_Bold,
+    
+  },
 
 })

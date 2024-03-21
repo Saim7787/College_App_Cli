@@ -49,5 +49,48 @@ scene: {
     fontSize:FONTSIZE.size_18,
     fontFamily:FONTFAMILY.Jost_SemiBold,
     textAlign:'center'
+  },
+  userItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  userName: {
+    fontSize: 16,
+    fontFamily:FONTFAMILY.Poppins_SemiBold,
+
+  },
+  userEmail: {
+    fontSize: 14,
+    fontFamily:FONTFAMILY.Poppins_SemiBold,
+
+    color: '#666',
+  },
+  approveButton: {
+    padding: 8,
+    backgroundColor: '#0961F5',
+    borderRadius: 5,
+    fontFamily:FONTFAMILY.Jost_SemiBold,
+    color: '#fff',
+
+  },
+  scene: {
+    flex: 1,
+  },
+  tabBar: {
+    backgroundColor: '#fff',
+  },
+  tabIndicator: {
+    backgroundColor: '#00cc00',
+  },
+  tabLabel: {
+    color: '#fff',
+  },
+  button_Text:{
+    fontFamily:FONTFAMILY.Jost_SemiBold,
+color:"#fff"
   }
 })

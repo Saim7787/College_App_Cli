@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { setUserToken } from '../../../Features/Token'
 import Toast from 'react-native-toast-message'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
@@ -43,7 +44,7 @@ const dispatch = useDispatch()
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <ScrollView contentContainerStyle={[styles.container, { backgroundColor: theme.primaryBackground }]}>
+        <KeyboardAwareScrollView style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
           <View style={styles.header}>
             <Image source={require('../../../Assets/Auth/Register/logo.png')} style={styles.logo_image} />
             <View>
@@ -61,7 +62,7 @@ const dispatch = useDispatch()
 
           <View style={styles.form_container}>
             {/* Email Input */}
-            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 30 ,
+            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10 ,
             borderColor:errors.email && touched.email ? 'red': 'transparent',
             borderWidth:1
             }]}>
@@ -79,7 +80,7 @@ const dispatch = useDispatch()
             {errors.email && touched.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
             {/* Password Input */}
-            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 20 ,
+            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10 ,
             borderColor:errors.password && touched.password ? 'red': 'transparent',
             borderWidth:1}]}>
               <Image source={require('../../../Assets/Auth/Register/Password.png')} style={styles.Password_input_image} />
@@ -139,7 +140,7 @@ const dispatch = useDispatch()
           </View>
 
 
-          <View style={[styles.sign_link,{marginBottom:hp('35%')}]} >
+          <View style={styles.sign_link} >
             <Text style={[styles.already_account,{color:theme.PrimarylightText}]}>Don’t have an Account?</Text>
          
            <TouchableOpacity onPress={() => navigation.navigate('Register') } >   
@@ -153,7 +154,7 @@ const dispatch = useDispatch()
         position='top'
         bottomOffset={20}
       />
-        </ScrollView>
+        </KeyboardAwareScrollView>
         
       )}
     </Formik>
