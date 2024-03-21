@@ -127,7 +127,7 @@ const dispatch = useDispatch()
 </View>
 
 {/* Button */}
-            <TouchableOpacity style={styles.Button} onPress={()=> navigation.navigate('AdminNavigator') } activeOpacity={0.4}>
+            <TouchableOpacity style={styles.Button} onPress={()=> navigation.navigate('Navigator') } activeOpacity={0.4}>
 <Text style={styles.button_text}>
     Sign In
 </Text>

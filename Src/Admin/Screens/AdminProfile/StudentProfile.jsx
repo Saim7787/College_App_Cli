@@ -129,8 +129,7 @@ image:require('../../../Assets/Dashboard/profile/location.png'),
   
 
   return (
-    <ScrollView style={{flexGrow: 1}} 
-    nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+    <ScrollView nestedScrollEnabled={false}>
       <View style={[styles.menuitemBackground,{backgroundColor:theme.input_Background}]}>
 
       {isLoading ? (
@@ -186,6 +185,7 @@ image:require('../../../Assets/Dashboard/profile/location.png'),
         data={PersonalInformation}
         renderItem={PerosnalInfo}
         keyExtractor={(item, index) => index.toString()}
+       
       />
 
             )}

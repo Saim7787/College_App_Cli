@@ -5,9 +5,9 @@ import { lightTheme, darkTheme } from '../../Theme/Color';
 import { ThemeContext } from '../../Theme/ThemeContext';
 
 import Profile from '../../Screens/Dashboard/Profile/Index';
-import News from '../../Screens/Dashboard/News/Index';
 import { Home } from '../../Screens';
-
+import Call from '../../Screens/Dashboard/CallLogs/Call';
+import Messages from '../../Screens/Dashboard/Messages/Messages';
 const Tab = createBottomTabNavigator();
 
 
@@ -58,7 +58,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
             fontSize: 12,
             fontWeight: '400',
             letterSpacing: 0.12,
-            fontFamily: 'Aubrey-Regular',
+            fontFamily: 'Poppins-SemiBold',
             marginTop: 8,
           }}
         >
@@ -122,6 +122,10 @@ const Navigator = () => {
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
      
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Tab.Screen name="Call" component={Call} options={{ headerShown: false }} />
+      <Tab.Screen name="Messages" component={Messages} options={{ headerShown: false }} />
+
+
       <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
      
     </Tab.Navigator>

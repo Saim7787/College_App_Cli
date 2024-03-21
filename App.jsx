@@ -5,6 +5,8 @@ import { Theme } from './Src/Theme/ThemeContext'
 import Route from './Src/Navigation/Route'
 import { ThemeProvider, createTheme } from '@rneui/themed';
 const App = () => {
+
+ 
   return (
     <Provider store={store}>
       <ThemeProvider>   

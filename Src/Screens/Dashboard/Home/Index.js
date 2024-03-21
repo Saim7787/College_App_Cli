@@ -1,12 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { StyleSheet, Text, View,  TouchableOpacity, Image, Alert, Platform, Pressable } from 'react-native';
 import Geolocation from '@react-native-community/geolocation'; // Using react-native-community/geolocation for location
-import styles from './Style'; // Assuming you have a Style.js file for styles
 
+import { NetworkInfo } from "react-native-network-info";
+import { ThemeContext } from '../../../Theme/ThemeContext';
+import { lightTheme, darkTheme } from '../../../Theme/Color';
+import Button from '../../../Component/Footer Button/Index'
+import { styles } from './Style';
 const Index = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  const [LocalIp, setLocalIp] = useState(null);
+  const [WifiIp, setWifiIp] = useState(null);
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
+  const handletoggletheme = themeContext?.toggleTheme
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -20,34 +28,17 @@ const Index = () => {
     );
   }, []);
 
-  
+  NetworkInfo.getIPAddress().then(ipAddress => {
+    console.log("Local IP address",ipAddress);
+    setLocalIp(ipAddress)
+  });
+   
+  NetworkInfo.getIPV4Address().then(ipv4Address => {
+    console.log("Wifi Address",ipv4Address);
+    setWifiIp(ipv4Address)
+  });
 
-  // function toggleCameraType() {
-  //   setType(current => (current === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back));
-  // }
-
-  // async function takePicture() {
-  //   if (cameraRef.current) {
-  //     const options = { quality: 1, base64: true, fixOrientation: true, exif: true };
-  //     const photo = await cameraRef.current.takePictureAsync(options);
-  //     setCapturedImage(photo.uri);
-  //   }
-  // }
-
-  // if (permission === null) {
-  //   // Permission status is still loading
-  //   return <View />;
-  // }
-
-  // if (!permission) {
-  //   // Camera permissions are not granted yet
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-  //       <Button onPress={() => alert('Grant Permission')} title="Grant Permission" />
-  //     </View>
-  //   );
-  // }
+ 
 
   let text = 'Waiting..';
   if (errorMsg) {
@@ -57,27 +48,18 @@ const Index = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.paragraph}>{text}</Text>
-      {/* <View style={styles.cameraContainer}>
-        <Camera ref={cameraRef} style={styles.camera} type={type}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-              <Text style={styles.text}>Flip Camera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={takePicture}>
-              <Text style={styles.text}>Take Picture</Text>
-            </TouchableOpacity>
-          </View>
-        </Camera>
-      </View>
+    <View style={[styles.container,{backgroundColor:theme.primaryBackground}]}>
+      <Text  style={[styles.newsDate,{ color: theme.primaryText }]}>{text}</Text>
+      <View>   
+    <Text  style={[styles.newsDate,{ color: theme.primaryText }]}>Local IP Address : {LocalIp}</Text>
+    </View>
 
-      {capturedImage && (
-        <View style={styles.imageContainer}>
-          <Text style={styles.paragraph}>Captured Image:</Text>
-          <Image source={{ uri: capturedImage }} style={styles.image} />
-        </View>
-      )} */}
+    <View>   
+      <Text  style={[styles.newsDate,{ color: theme.primaryText }]}>Wifi Ip Address : {WifiIp}</Text>
+      </View>
+     <Text style={[styles.newsDate,{ color: theme.primaryText }]}> Toggletheme   </Text>    
+
+      <Button handleSubmit={handletoggletheme} text={'toggleTheme'} />
     </View>
   );
 };

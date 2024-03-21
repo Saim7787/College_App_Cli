@@ -161,7 +161,7 @@ image:require('../../../Assets/Dashboard/profile/location.png'),
       )}
       </View>
      
-      <Text style={[styles.Personal,{color:theme.primaryText}]}>Personal Information</Text>
+      <Text style={[styles.Personal,{color:theme.primaryText}]}> Personal Information</Text>
       <View style={[styles.menuitemBackground,{backgroundColor:theme.input_Background}]}>
 
       {isLoading ? (
