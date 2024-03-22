@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: SPACING.space_24,
-    paddingVertical:SPACING.space_30
   },
  
   touch:{

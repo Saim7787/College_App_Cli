@@ -6,8 +6,8 @@ import { ThemeContext } from '../../Theme/ThemeContext';
 
 
 import AdminDashboard from '../../Admin/Screens/Dashboard/AdminDashboard';
-import Users from '../../Admin/Screens/Users/Users';
-import Notification from '../../Admin/Screens/Notifications/NOtification';
+import Call from '../../Admin/Screens/CallLogs/Call';
+import Messages from '../../Admin/Screens/Messages/Messages';
 import AdminProfile from '../../Admin/Screens/AdminProfile/Index';
 
 const Tab = createBottomTabNavigator();
@@ -124,9 +124,9 @@ const AdminNavigator = () => {
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
      
       <Tab.Screen name="Home" component={AdminDashboard} options={{ headerShown: false }} />
-      <Tab.Screen name="Users" component={Users} options={{ headerShown: false }} />
+      <Tab.Screen name="Call" component={Call} options={{ headerShown: false }} />
    
-      <Tab.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
+      <Tab.Screen name="Message" component={Messages} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={AdminProfile} options={{ headerShown: false }} />
 
      

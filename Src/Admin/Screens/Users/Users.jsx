@@ -6,7 +6,7 @@ import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { FONTSIZE } from '../../../Theme/FontSize';
 import { FONTFAMILY } from '../../../Theme/FontFamily';
 import { styles } from './Styles';
-const Users = () => {
+const Users = ({navigation}) => {
   // Define an array of user objects
   const [users, setUsers] = useState([
     { id: 1, name: 'John Doe', email: 'john.doe@example.com', approved: true },
@@ -25,11 +25,11 @@ const Users = () => {
 
   // Function to render user item with approve button
   const renderUserItem = (user) => (
-    <View style={styles.userItem}>
-      <View>
+    <View style={styles.userItem} key={user.id}>
+      <TouchableOpacity onPress={()=> navigation.navigate("AdminNavigator")} >
         <Text style={styles.userName}>{user.name}</Text>
         <Text style={styles.userEmail}>{user.email}</Text>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => toggleApproval(user.id)} style={styles.approveButton}>
         <Text style={styles.button_Text}>{user.approved ? 'Approved' : 'Approve'}</Text>
       </TouchableOpacity>

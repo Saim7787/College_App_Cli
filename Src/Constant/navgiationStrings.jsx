@@ -7,6 +7,8 @@ export default {
     VerifyPassword:"VerifyPassword",
     NewPassword:"NewPassword",
     AdminDashboard:"AdminDashboard",
+    Users:"Users",
+
 
 
 

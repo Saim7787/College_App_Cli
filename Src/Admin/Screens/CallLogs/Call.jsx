@@ -4,6 +4,9 @@ import CallLogs from 'react-native-call-log';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from './Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
+import { TabBar, TabView } from 'react-native-tab-view';
+import { FONTSIZE } from '../../../Theme/FontSize';
+import { FONTFAMILY } from '../../../Theme/FontFamily';
 const Call = () => {
     const [listData, setListDate] = useState([]);
     const themeContext = useContext(ThemeContext);
@@ -46,16 +49,16 @@ const Call = () => {
   const ItemView = ({item}) => {
     return (
       // FlatList Item
-      <View style={{backgroundColor:theme.primaryBackground}}>
-        <Text style={[styles.newsDate,{ color: theme.primaryText }]}>
-          Name : {item.name ? item.name : 'NA'}
-          </Text>
-         <Text style={[styles.newsDate,{ color: theme.primaryText }]}> DateTime : {item.dateTime}   </Text>
-         <Text style={[styles.newsDate,{ color: theme.primaryText }]}> Duration : {item.duration}   </Text>
-         <Text style={[styles.newsDate,{ color: theme.primaryText }]}> PhoneNumber : {item.phoneNumber}   </Text>
-         <Text style={[styles.newsDate,{ color: theme.primaryText }]}> RawType : {item.rawType}   </Text>
-         <Text style={[styles.newsDate,{ color: theme.primaryText }]}> Timestamp : {item.timestamp}   </Text>
-         <Text style={[styles.newsDate,{ color: theme.primaryText }]}> Type : {item.type}   </Text>
+      <View style={{backgroundColor:theme.primaryBackground,display:"flex",justifyContent:"space-between",alignItems:"center",flexDirection:"row"}}>
+        <View> 
+        <Text style={[styles.newsDate,{ color: theme.primaryText }]}>{item.name ? item.name : 'NA'} </Text>
+         <Text style={[styles.newsDate,{ color: theme.primaryText }]}>  {item.phoneNumber}   </Text>
+         <Text style={[styles.newsDate,{ color: theme.primaryText }]}>  {item.dateTime}   </Text>
+         <Text style={[styles.newsDate,{ color: theme.primaryText }]}>  {item.duration}   </Text>
+         <Text style={[styles.newsDate,{ color: theme.primaryText }]}>  {item.rawType}   </Text>
+         <Text style={[styles.newsDate,{ color: theme.primaryText }]}>  {item.timestamp}   </Text>
+         </View>
+         <Text style={[styles.newsDate,{ color: theme.primaryText }]}>  {item.type}   </Text>
       </View>
     );
   };
@@ -73,6 +76,10 @@ const Call = () => {
     );
   };
 
+
+
+
+
     return (
    
     <View style={[styles.container,{backgroundColor:theme.primaryBackground}]}>
@@ -86,6 +93,9 @@ const Call = () => {
           renderItem={ItemView}
           keyExtractor={(item, index) => index.toString()}
         />
+
+
+
     </View>
   )
 }

@@ -1,12 +1,12 @@
 import { FlatList, StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
-import { styles } from './Style';
+import { styles } from '../SentMessages/Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
 import SmsAndroid from 'react-native-get-sms-android';
 import SmsListener from 'react-native-android-sms-listener';
 
-const Messages = () => {
+const RecieveMessage = () => {
   const [data, setData] = useState([]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
@@ -59,8 +59,6 @@ console.log('data state',data)
 
     // Initialize SMS listener
     const listener = SmsListener.addListener(message => {
-      console.log('New SMS received:', message);
-      // Refresh SMS list or perform any action upon receiving new SMS
       
       fetchSmsMessages();
     });
@@ -72,12 +70,15 @@ console.log('data state',data)
   }, []);
 
   const ItemView = ({ item }) => {
-    console.log('data', item);
+  
     return (
-      <View style={{ backgroundColor: theme.primaryBackground }}>
-        <Text style={[styles.newsDate, { color: theme.primaryText }]}> DateTime : {item.address} </Text>
-        <Text style={[styles.newsDate, { color: theme.primaryText }]}> Message : {item.body} </Text>
-        <Text style={[styles.newsDate, { color: theme.primaryText }]}> Duration : {item.date} </Text>
+      <View style={{ backgroundColor: theme.primaryBackground ,display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+        <View style={{display:'flex'}}>   
+        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.address} </Text>
+        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.body} </Text>
+         
+        </View>
+        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.date} </Text>
 
 
         
@@ -99,7 +100,6 @@ console.log('data state',data)
 
   return (
     <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
-      <Text style={[styles.newsDate, { color: theme.primaryText }]}> Messages </Text>
       <FlatList
         data={data}
         ItemSeparatorComponent={ItemSeparatorView}
@@ -110,4 +110,4 @@ console.log('data state',data)
   );
 };
 
-export default Messages;
+export default RecieveMessage;

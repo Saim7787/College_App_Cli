@@ -8,6 +8,7 @@ import Navigator from './Tab Navigation/Navigator';
 
 import { useSelector } from 'react-redux';
 import AdminNavigator from './Tab Navigation/AdminNavigator';
+import { Users } from '../Admin/Screens/Index';
 const Route  = () => {
   // const data = useSelector((state) => state.token.token);
   // const [token, setToken] = useState('');
@@ -26,10 +27,12 @@ const Route  = () => {
   // };
   return (
     <NavigationContainer>
-       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'AdminNavigator'}>
+       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'Users'}>
 
        <Stack.Screen name={'Navigator'} component={Navigator} /> 
        <Stack.Screen name={'AdminNavigator'} component={AdminNavigator} /> 
+       <Stack.Screen name={navgiationStrings.Users} component={Users} /> 
+
 
        <Stack.Screen name={navgiationStrings.Login} component={Login} />
       <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
