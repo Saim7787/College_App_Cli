@@ -6,7 +6,7 @@ import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { FONTSIZE } from '../../../Theme/FontSize';
 import { FONTFAMILY } from '../../../Theme/FontFamily';
 import { styles } from './Styles';
-const Users = ({navigation}) => {
+const Admin = ({navigation}) => {
   // Define an array of user objects
   const [users, setUsers] = useState([
     { id: 1, name: 'John Doe', email: 'john.doe@example.com', approved: true },
@@ -89,4 +89,4 @@ const Users = ({navigation}) => {
 };
 
 
-export default Users;
+export default Admin;

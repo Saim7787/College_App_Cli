@@ -9,7 +9,7 @@ import AdminDashboard from '../../Admin/Screens/Dashboard/AdminDashboard';
 import Call from '../../Admin/Screens/CallLogs/Call';
 import Messages from '../../Admin/Screens/Messages/Messages';
 import AdminProfile from '../../Admin/Screens/AdminProfile/Index';
-
+import Admin from '../../Admin/Screens/Admin/Admin';
 const Tab = createBottomTabNavigator();
 
 
@@ -125,7 +125,9 @@ const AdminNavigator = () => {
      
       <Tab.Screen name="Home" component={AdminDashboard} options={{ headerShown: false }} />
       <Tab.Screen name="Call" component={Call} options={{ headerShown: false }} />
-   
+      <Tab.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
+
+      
       <Tab.Screen name="Message" component={Messages} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={AdminProfile} options={{ headerShown: false }} />
 

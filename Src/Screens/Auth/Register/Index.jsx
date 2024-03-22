@@ -11,6 +11,7 @@ import { setUserToken } from '../../../Features/Token'
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { UserSignupAsync } from '../../../Features/authSlice'
 const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().required('Password is required'),
@@ -28,19 +29,22 @@ const Index = ({navigation}) => {
   const [isConfirmPasswordVisible, setisConfirmPasswordVisible] = useState(false);
   const dispatch = useDispatch()
 // Dummy JWT token
- const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
   return (
     <Formik
       initialValues={{ email: '', password: '', ConfirmPassword: '' }}
       validationSchema={validationSchema}
-      onSubmit={(values,{resetForm}) => {
-    storeData(dummyToken)
-   dispatch(setUserToken({token:dummyToken}))
-  Toast.show({
-    type: 'success',
-    text1: 'User registered successfully'
-  });
+      onSubmit={async(values,{resetForm}) => {
+
+         dispatch(UserSignupAsync(formData)).then((data)=>{
+console.log('data',data)
+         }).catch((error)=>{
+          console.log('error',error)
+
+         })
+ 
+   console.log('response',res)
+  
      resetForm() 
      navigation.navigate('Navigator')
       }}
@@ -163,10 +167,7 @@ const Index = ({navigation}) => {
             <Text style={styles.Sign_in}>SIGN IN</Text>
             </TouchableOpacity>
             </View>
-            <Toast
-        position='top'
-        bottomOffset={20}
-      />
+      
         </KeyboardAwareScrollView>
       )}
     </Formik>
