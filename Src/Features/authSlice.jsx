@@ -62,7 +62,7 @@ export const GetAdmin = createAsyncThunk(
   async (data) => {
     try {
       const response = await axios.post(`${Api_Url}/users/getAdmins`, data);
-    console.log('response admin gets',response.data)
+    
     
       return response.data;
     } catch (error) {
@@ -76,7 +76,7 @@ export const GetAdmin = createAsyncThunk(
 
 // Update User
 export const UpdateUser = createAsyncThunk(
-  "clients/getAdmins",
+  "clients/Update",
   async (data) => {
     try {
       const response = await axios.post(`${Api_Url}/users/updateUser`, data);

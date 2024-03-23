@@ -15,79 +15,115 @@ const Admin = ({navigation}) => {
   const data = useSelector((state) => state?.Auth?.Admin);
   const dispatch = useDispatch();
 
-  const approvedUsers = data.filter((user) => user.isAuthenticated);
-  const unauthorizedUsers = data.filter((user) => !user.isAuthenticated);
+// Inside your component
+const approvedUsers = data ? data.filter((user) => user.isAuthenticated) : [];
+const unauthorizedUsers = data ? data.filter((user) => !user.isAuthenticated) : [];
 
-  // User role options (adjust as needed)
-  const userRoles = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Super Admin', value: 'superadmin' }, // Add superadmin role if needed
-  ];
+// Rest of your component remains unchanged...
 
-  const [selectedRole, setSelectedRole] = useState(null); // Selected user role
 
-  // Authentication and access state variables
-  const [isSwitch1On, setIsSwitch1On] = useState(false); // User authentication toggle
-  const [isSwitch2On, setIsSwitch2On] = useState(false); // Full access toggle
 
-  const toggleApproval = async (userId, isAuthenticated, fullAccess, userRole) => {
-    const updatedUserData = data.map(user => {
-      if (user.id === userId) {
-        return {
-          ...user,
-          isAuthenticated: !isAuthenticated,
-          fullAccess: !fullAccess, // Toggle the full access status
-          role: userRole // Preserve the user role
-        };
-      }
-      return user;
-    });
-    dispatch(UpdateUser(updatedUserData));
-    return userId; // Return only the user ID
+
+
+
+
+  useEffect(() => {
+    dispatch(GetAdmin());
+  }, [dispatch]);
+
+
+
+
+  const handleRole = async(id,value) => {
+    
+  
+ 
+const data ={
+  id,
+  role:value
+}
+    const res =   await  dispatch(UpdateUser(data));
+    dispatch(GetAdmin());
+
+   console.log('role changed',res)
+
+  };
+
+  // Function to handle access change
+  const handleAccess = async (id, isChecked) => {
+    const data ={
+      id,
+      fullAccess:isChecked
+    }
+    const res =   await dispatch(UpdateUser(data));
+    dispatch(GetAdmin());
+
+   console.log('access changed',res)
   };
   
+  const handleAppreoved = async (id, isChecked) => {
+    const result ={
+      id,
+      isAuthenticated:isChecked
+    }
+    const res =   await   dispatch(UpdateUser(result));
+    dispatch(GetAdmin());
+   console.log('Approved  changed',res)
+
+
+  };
+
 
 
   // Function to render user item with approve button
-  const renderUserItem = (user) => (
-    <View style={styles.userItem} key={user.id}>
-      <TouchableOpacity onPress={()=> navigation.navigate("AdminNavigator")} >
-        <Text style={styles.userName}>{user.userName}</Text>
-        <Text style={styles.userEmail}>{user.role} </Text>
-        <DropDownPicker
-      open={open}
-      value={value}
-      items={items}
-      setOpen={setOpen}
-      setValue={setValue}
-      setItems={setItems}
-    />
-
-        <Text style={styles.userEmail}>    
-        {user.fullAccess ? "Access full" : 
-        
-        <TouchableOpacity onPress={() => changeUserAccess(user.id,user.fullAccess)} >
-       <Switch
-      value={checked}
-      onValueChange={(value) => setChecked(value)}
-    />
-      </TouchableOpacity>
-        }
-        </Text>
-      </TouchableOpacity>
-{!user.isAuthenticated &&
-
-      <TouchableOpacity onPress={() => changeUserAuthentication(user.id,user.isAuthenticated)} >
-       <Switch
-      value={checked}
-      onValueChange={(value) => setChecked(value)}
-    />
-      </TouchableOpacity>
+  const renderUserItem = (user) => {
+    if (!data) {
+      return null; // Or render a loading indicator or some placeholder content
     }
+  
+    return (
+      <View style={styles.userItem} key={user.id}>
+     
+          <Text style={styles.userName}>{user.userName}</Text>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <Text style={styles.userName}>
+          changed to SuperAdmin
+        </Text>
+        <Switch
+          value={user.role === 'superadmin'} // Assuming 'superadmin' as the super admin role
+          onValueChange={(value) => handleRole(user.id, value ? 'superadmin' : 'admin')}
+        />
+      </View>
 
-    </View>
-  );
 
+
+
+
+          <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>   
+          <Text  style={styles.userName}>
+          User Access   </Text>
+              <Switch
+                value={user.fullAccess}
+                onValueChange={(value) => handleAccess(user.id, value)}
+              />
+        
+          </View>
+        {!user.isAuthenticated &&
+          <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>   
+
+         <Text  style={styles.userName}>   
+          User Authenticated 
+          </Text>
+            <Switch
+              value={user.isAuthenticated}
+              onValueChange={(value) => handleAppreoved(user.id, value)}
+            />
+           </View>
+        }
+      </View>
+    );
+  };
+  
   // Define tab views for approved and unauthorized users
   const [index, setIndex] = useState(0);
   const [routes] = useState([
