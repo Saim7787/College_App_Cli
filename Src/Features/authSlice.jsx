@@ -9,9 +9,9 @@ import Toast from "react-native-toast-message";
 // User LOGIN
 export const loginuserAsync = createAsyncThunk(
   "user/login",
-  async (formdata) => {
+  async (formData) => {
     try {
-      const response = await axios.post(`${Api_Url}/users/login`, formdata);
+      const response = await axios.post(`${Api_Url}/users/login`, formData);
 
      
       Toast.show({
@@ -20,12 +20,10 @@ export const loginuserAsync = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      console.log('error status',error.response.status)
       Toast.show({
         type: 'error',
         text1: error.response.data.message
       });
-      return error.response.status
     }
   }
 );
@@ -41,15 +39,12 @@ export const UserSignupAsync = createAsyncThunk(
   async (formData) => {
     try {
       const response = await axios.post(`${Api_Url}/users/signUp`, formData);
-console.log('response',response)
-    
       Toast.show({
         type: 'success',
         text1: response?.data?.message
       });
       return response.data;
     } catch (error) {
-console.log('error',error)
 
       Toast.show({
         type: 'error',
@@ -67,10 +62,7 @@ export const GetAdmin = createAsyncThunk(
   async (data) => {
     try {
       const response = await axios.post(`${Api_Url}/users/getAdmins`, data);
-      Toast.show({
-        type: 'success',
-        text1: response?.data?.message
-      });
+    console.log('response admin gets',response.data)
     
       return response.data;
     } catch (error) {
@@ -117,8 +109,8 @@ export const authUserAsync = createAsyncThunk("client/authClientSessionEverytime
 // INITIAL STATE
 const initialState = {
   User: null,
-  CreateUser: null,
-  Admin:null,
+  
+  Admin:[],
   loading: false,
   logoutUser: null,
   clearUser: null,
@@ -146,16 +138,10 @@ const authSlice = createSlice({
       .addCase(loginuserAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.User = action.payload;
+   
       })
 
-      // SIGN UP ADD CASE
-      .addCase(UserSignupAsync.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(UserSignupAsync.fulfilled, (state, action) => {
-        state.loading = false;
-        state.CreateUser = action.payload;
-      })
+    
 
 
       .addCase(GetAdmin.pending, (state, action) => {

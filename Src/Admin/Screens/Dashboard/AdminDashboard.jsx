@@ -3,11 +3,15 @@ import React from 'react'
 import { styles } from './Style'
 import { ThemeContext } from '../../../Theme/ThemeContext'
 import { lightTheme, darkTheme } from '../../../Theme/Color';
+import { useSelector } from 'react-redux';
 
 const AdminDashboard = () => {
   const themeContext = React.useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const handletoggletheme = themeContext?.toggleTheme
+  const data = useSelector((state) => state?.Auth?.User);
+
+console.log('data',data)
 
   const searchImageSource = require('../../../Assets/Dashboard/Home/Search.png');
 const searchImageStyle = themeContext?.isDarkTheme
@@ -23,7 +27,7 @@ const searchImageStyle = themeContext?.isDarkTheme
 
       <View style={styles.header}>
 <View>
-  <Text style={[styles.header_heading,{color:theme.primaryText}]}>Hi, Ronald A. Martin</Text>
+  <Text style={[styles.header_heading,{color:theme.primaryText}]}>Hi,{data?.user.userName}</Text>
   <Text style={[styles.header_subheading,{color:theme.PrimarylightText}]}>What Would you like to learn Today?</Text>
   <Text style={[styles.header_subheading,{color:theme.PrimarylightText}]}>Search Below.</Text>
 

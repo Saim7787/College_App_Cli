@@ -10,6 +10,7 @@ import Call from '../../Admin/Screens/CallLogs/Call';
 import Messages from '../../Admin/Screens/Messages/Messages';
 import AdminProfile from '../../Admin/Screens/AdminProfile/Index';
 import Admin from '../../Admin/Screens/Admin/Admin';
+import { useSelector } from 'react-redux';
 const Tab = createBottomTabNavigator();
 
 
@@ -120,14 +121,18 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 };
 
 const AdminNavigator = () => {
+
+  const data = useSelector((state) => state?.Auth?.User);
+
   return (
     <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
      
       <Tab.Screen name="Home" component={AdminDashboard} options={{ headerShown: false }} />
       <Tab.Screen name="Call" component={Call} options={{ headerShown: false }} />
+      {data.user.role === 'superAdmin' && 
       <Tab.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
 
-      
+  }
       <Tab.Screen name="Message" component={Messages} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={AdminProfile} options={{ headerShown: false }} />
 

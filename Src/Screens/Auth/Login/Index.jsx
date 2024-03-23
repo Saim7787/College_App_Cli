@@ -5,15 +5,14 @@ import { ThemeContext } from '../../../Theme/ThemeContext'
 import { lightTheme, darkTheme } from '../../../Theme/Color'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { getData, storeData } from '../../../Utility/Storage/Storage'
-import { useDispatch } from 'react-redux'
-import { setUserToken } from '../../../Features/Token'
-import Toast from 'react-native-toast-message'
+
+import { useDispatch, useSelector } from 'react-redux'
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { addUserData, loginuserAsync } from '../../../Features/authSlice'
 
 const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
+  userName: Yup.string().required('User Name is required'),
     password: Yup.string().required('Password is required'),
  
   });
@@ -22,24 +21,34 @@ const Index = ({navigation}) => {
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const handletoggletheme = themeContext?.toggleTheme;
-
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const dummyToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 const dispatch = useDispatch()
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
+      initialValues={{ userName: '', password: '' }}
       validationSchema={validationSchema}
-      onSubmit={(values,{resetForm}) => {
-      //   storeData(dummyToken)
-      //   dispatch(setUserToken({token:dummyToken}))
-      //  Toast.show({
-      //    type: 'success',
-      //    text1: 'User login successfully'
-      //  });
-       
-      resetForm() 
-      
+      onSubmit={ async (values,{resetForm}) => {
+        const formData = {
+          userName: values.userName,
+          password: values.password,
+        
+        };
+
+    
+        const res = await dispatch(loginuserAsync(formData))
+     
+        if (res.payload.login) {
+    
+          if (res.payload.user.role === "user") {
+    
+          
+            navigation.replace('Navigator');
+          } else {
+    
+            navigation.replace('AdminNavigator');
+          }
+        } 
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -62,21 +71,21 @@ const dispatch = useDispatch()
           <View style={styles.form_container}>
             {/* Email Input */}
             <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10 ,
-            borderColor:errors.email && touched.email ? 'red': 'transparent',
+            borderColor:errors.userName && touched.userName ? 'red': 'transparent',
             borderWidth:1
             }]}>
               <Image source={require('../../../Assets/Auth/Register/ICON.png')} style={styles.input_image} />
               <TextInput
                 style={[styles.input, { color: theme.PrimarylightText }]}
-                placeholder="Email"
+                placeholder="User Name"
                 placeholderTextColor={theme.PrimarylightText}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
+                onChangeText={handleChange('userName')}
+                onBlur={handleBlur('userName')}
+                value={values.userName}
               />
              
             </View>
-            {errors.email && touched.email && <Text style={styles.errorText}>{errors.email}</Text>}
+            {errors.userName && touched.userName && <Text style={styles.errorText}>{errors.userName}</Text>}
 
             {/* Password Input */}
             <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10 ,
@@ -105,7 +114,7 @@ const dispatch = useDispatch()
             </View>
             {errors.password && touched.password && <Text style={styles.errorText}>{errors.password}</Text>}
           
-        
+{/*         
 <View style={styles.policy_check}>
 
 <View style={{flexDirection:'row',alignItems:'center'}}>   
@@ -124,10 +133,10 @@ const dispatch = useDispatch()
 <TouchableOpacity onPress={()=> navigation.navigate('ForgotPassword')}>   
 <Text style={[styles.Sign_in]}>Forgot Password?</Text>
 </TouchableOpacity>
-</View>
+</View> */}
 
 {/* Button */}
-            <TouchableOpacity style={styles.Button} onPress={()=> navigation.navigate('Navigator') } activeOpacity={0.4}>
+            <TouchableOpacity style={styles.Button} onPress={handleSubmit} activeOpacity={0.4}>
 <Text style={styles.button_text}>
     Sign In
 </Text>
@@ -149,10 +158,7 @@ const dispatch = useDispatch()
           
 
 
-            <Toast
-        position='top'
-        bottomOffset={20}
-      />
+    
         </KeyboardAwareScrollView>
         
       )}

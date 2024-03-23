@@ -67,11 +67,11 @@ const [adminRef,SetadminRef] = useState()
         if (res.payload.message === "Sign Up Successful!") {
           // Navigate to the login screen
           navigation.navigate('Login');
+          resetForm() 
+
         }
- console.log('res',res)
 
   
-     resetForm() 
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -93,7 +93,7 @@ const [adminRef,SetadminRef] = useState()
 
           <View style={styles.form_container}>
             {/* Email Input */}
-            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10,  borderColor:errors.email && touched.email ? 'red': 'transparent',
+            <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10,  borderColor:errors.userName && touched.userName ? 'red': 'transparent',
             borderWidth:1 }]}>
               <Image source={require('../../../Assets/Auth/Register/ICON.png')} style={styles.input_image} />
               <TextInput
@@ -172,7 +172,7 @@ const [adminRef,SetadminRef] = useState()
         borderRadius:12,
         paddingHorizontal:18,
         paddingVertical:2,
-    
+    borderWidth:1,
         marginVertical:12,
         borderColor:!role  ? 'red': 'transparent',
   

@@ -28,7 +28,7 @@ const Theme = ({ children }) => {
     }
 
     loadTheme();
-  }, [colorScheme]); // Add colorScheme as a dependency
+  }, []); // Add colorScheme as a dependency
 
   const toggleTheme = () => {
     setIsDarkTheme(prev => !prev);
@@ -45,12 +45,12 @@ const Theme = ({ children }) => {
     }
 
     saveTheme();
-  }, [isDarkTheme]);
+  }, []);
 
   // Watch for changes in the device's color scheme and update the theme accordingly
   useEffect(() => {
     setIsDarkTheme(colorScheme === 'dark');
-  }, [colorScheme]);
+  }, []);
 
   const themeContextValue = {
     isDarkTheme,
