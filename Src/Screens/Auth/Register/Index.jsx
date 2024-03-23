@@ -6,47 +6,72 @@ import { lightTheme, darkTheme } from '../../../Theme/Color'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { storeData } from '../../../Utility/Storage/Storage'
-import { setUserToken } from '../../../Features/Token'
+
 import Toast from 'react-native-toast-message'
 import { useDispatch } from 'react-redux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { UserSignupAsync } from '../../../Features/authSlice'
+import DropDownPicker from 'react-native-dropdown-picker';
+import { FONTFAMILY } from '../../../Theme/FontFamily'
 const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string().required('Password is required'),
-    ConfirmPassword: Yup.string()
-      .required('Confirm Password is required')
-      .oneOf([Yup.ref('password'), null], 'Passwords must match'),
-  });
+  userName: Yup.string().required('Username is required'),
+  password: Yup.string().required('Password is required'),
+  ConfirmPassword: Yup.string()
+    .required('Confirm Password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  
+});
+
 
 const Index = ({navigation}) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setisConfirmPasswordVisible] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [role, setrole] = useState();
+ 
+const [adminRef,SetadminRef] = useState()
+  const [items, setItems] = useState([
+    {label: 'User', value: 'user'},
+    {label: 'Admin', value: 'admin'}
+  ]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
  
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setisConfirmPasswordVisible] = useState(false);
-  const dispatch = useDispatch()
-// Dummy JWT token
+ 
 
+  const dispatch = useDispatch()
+
+ 
+
+  // Dummy JWT token
+
+  const handleInputChange = (number) => {
+    SetadminRef(number);
+  };
   return (
     <Formik
-      initialValues={{ email: '', password: '', ConfirmPassword: '' }}
+      initialValues={{ userName: '', password: '', ConfirmPassword: '',  }}
       validationSchema={validationSchema}
       onSubmit={async(values,{resetForm}) => {
+        const formData = {
+          userName: values.userName,
+          password: values.password,
+          role: role
+        };
 
-         dispatch(UserSignupAsync(formData)).then((data)=>{
-console.log('data',data)
-         }).catch((error)=>{
-          console.log('error',error)
+        if (role === 'user') {
+          formData.adminRef = adminRef;
+        }
+        const res = await dispatch(UserSignupAsync(formData))
+        if (res.payload.message === "Sign Up Successful!") {
+          // Navigate to the login screen
+          navigation.navigate('Login');
+        }
+ console.log('res',res)
 
-         })
- 
-   console.log('response',res)
   
      resetForm() 
-     navigation.navigate('Navigator')
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -73,15 +98,15 @@ console.log('data',data)
               <Image source={require('../../../Assets/Auth/Register/ICON.png')} style={styles.input_image} />
               <TextInput
                 style={[styles.input, { color: theme.PrimarylightText }]}
-                placeholder="Email"
+                placeholder="UserName"
                 placeholderTextColor={theme.PrimarylightText}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
+                onChangeText={handleChange('userName')}
+                onBlur={handleBlur('userName')}
+                value={values.userName}
               />
              
             </View>
-            {errors.email && touched.email && <Text style={styles.errorText}>{errors.email}</Text>}
+            {errors.userName && touched.userName && <Text style={styles.errorText}>{errors.userName}</Text>}
 
             {/* Password Input */}
             <View style={[styles.input_container, { backgroundColor: theme.input_Background, marginTop: 10,  borderColor:errors.password && touched.password ? 'red': 'transparent',
@@ -133,22 +158,62 @@ console.log('data',data)
               </TouchableOpacity>
             </View>
             {errors.ConfirmPassword && touched.ConfirmPassword && <Text style={styles.errorText}>{errors.ConfirmPassword}</Text>}
-<View style={styles.policy_check}>
+            <DropDownPicker
+      open={open}
+      value={role}
+      items={items}
+      
+      setOpen={setOpen}
+      setValue={setrole}
+      setItems={setItems}
+      stickyHeader={true}
+      style={{
+        backgroundColor: theme.input_Background,
+        borderRadius:12,
+        paddingHorizontal:18,
+        paddingVertical:2,
+    
+        marginVertical:12,
+        borderColor:!role  ? 'red': 'transparent',
+  
+      }}
+      labelStyle={{
+          fontFamily: FONTFAMILY.Mulish_Bold,
 
+      }}
+      textStyle={{
+        fontSize: 14,
+        fontFamily: FONTFAMILY.Mulish_Bold,
 
-            <BouncyCheckbox
-  size={25}
-  fillColor="#10A711"
-  unfillColor="#FFFFFF"
+      }}
 
-  iconStyle={{ borderColor: "#50B748" }}
-  innerIconStyle={{ borderWidth: 2 }}
-  textStyle={{ fontFamily: "Aubrey_Regular" }}
-  onPress={(isChecked) => {}}
 />
-<Text style={[styles.Policy_text, { color: theme.PrimarylightText }]}>Agree to Terms & Conditions</Text>
+{!role  && <Text style={styles.errorText}>Role is Required</Text>}
 
-</View>
+
+{role === 'user' && (
+            <>
+              <View
+                style={[
+                  styles.input_container,
+                  { backgroundColor: theme.input_Background, marginTop: 10, borderColor: !adminRef ? 'red' : 'transparent', borderWidth: 1 }
+                ]}>
+                <TextInput
+                  style={[styles.input, { color: theme.PrimarylightText }]}
+                  placeholder="Admin Reference" // Corrected placeholder text
+                  placeholderTextColor={theme.PrimarylightText} // Changed to use theme color
+                  onChangeText={handleInputChange}
+                
+                  inputMode='numeric'
+                  value={adminRef}
+                />
+              </View>
+              {!adminRef  && <Text style={styles.errorText}>AdminRef is Required</Text>}
+            </>
+          )}
+
+
+
 
 {/* Button */}
             <TouchableOpacity style={styles.Button} onPress={handleSubmit} activeOpacity={0.4}>

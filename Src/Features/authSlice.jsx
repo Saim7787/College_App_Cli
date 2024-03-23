@@ -38,10 +38,10 @@ export const logoutUserAsync = createAsyncThunk("users/logout", async () => {
 /* USER Signup */
 export const UserSignupAsync = createAsyncThunk(
   "clients/signup",
-  async (data) => {
+  async (formData) => {
     try {
-      const response = await axios.post(`${Api_Url}/users/signUp`, data);
-
+      const response = await axios.post(`${Api_Url}/users/signUp`, formData);
+console.log('response',response)
     
       Toast.show({
         type: 'success',
@@ -49,6 +49,8 @@ export const UserSignupAsync = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
+console.log('error',error)
+
       Toast.show({
         type: 'error',
         text1: error.response.data.message

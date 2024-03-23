@@ -10,7 +10,6 @@ import { getData, storeData } from '../../../Utility/Storage/Storage'
 import { useDispatch } from 'react-redux'
 import { setUserToken } from '../../../Features/Token'
 import Toast from 'react-native-toast-message'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const validationSchema = Yup.object().shape({

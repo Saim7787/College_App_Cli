@@ -9,6 +9,7 @@ const App = () => {
 
  
   return (
+    <>    
     <Provider store={store}>
       <ThemeProvider>   
       <Theme>   
@@ -16,12 +17,15 @@ const App = () => {
 <Route/> 
       </Theme>
 
-      <Toast
-        position='top'
-        bottomOffset={20}
-      />
+      
     </ThemeProvider>
     </Provider>
+
+<Toast
+position='top'
+bottomOffset={20}
+/>
+</>
   )
 }
 

@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     gap: 10,
     width: '100%',
   
-    borderRadius: BORDERRADIUS.radius_12,
+  borderRadius: BORDERRADIUS.radius_12,
     paddingHorizontal: SPACING.space_18,
     paddingVertical: SPACING.space_2,
     ...Platform.select({
