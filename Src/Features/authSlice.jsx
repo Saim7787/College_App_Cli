@@ -97,7 +97,7 @@ export const UpdateUser = createAsyncThunk(
 
 
 // AUTH USER ASYNC THUNK
-export const authUserAsync = createAsyncThunk("client/authClientSessionEverytime", async () => {
+export const getActiveSessions = createAsyncThunk("client/getActiveSessions", async () => {
   try {
     const response = await axios.post(`${Api_Url}/users/getActiveSessions`);
     return response.data;
@@ -106,11 +106,23 @@ export const authUserAsync = createAsyncThunk("client/authClientSessionEverytime
   }
 });
 
+
+export const persistUserSession = createAsyncThunk("client/persistUserSession", async () => {
+  try {
+    const response = await axios.post(`${Api_Url}/users/persistUserSession`);
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data.msg);
+  }
+});
+
+
 // INITIAL STATE
 const initialState = {
   User: null,
   
   Admin:[],
+  ActiveUser:[],
   loading: false,
   logoutUser: null,
   clearUser: null,
@@ -141,7 +153,15 @@ const authSlice = createSlice({
    
       })
 
-    
+      .addCase(logoutUserAsync.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(logoutUserAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.User = null;
+   
+      })
+
 
 
       .addCase(GetAdmin.pending, (state, action) => {
@@ -153,13 +173,22 @@ const authSlice = createSlice({
       })
       //  Send Otp
 
-      .addCase(authUserAsync.pending, (state) => {
+      .addCase(persistUserSession.pending, (state) => {
         state.loading = true;
       })
-      .addCase(authUserAsync.fulfilled, (state, action) => {
+      .addCase(persistUserSession.fulfilled, (state, action) => {
         state.loading = false;
         state.User = action.payload;
-      });
+      })
+
+      .addCase(getActiveSessions.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getActiveSessions.fulfilled, (state, action) => {
+        state.loading = false;
+        state.ActiveUser = action.payload;
+      })
+
   },
 });
 

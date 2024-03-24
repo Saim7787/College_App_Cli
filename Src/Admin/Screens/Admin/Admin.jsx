@@ -10,7 +10,6 @@ import { GetAdmin } from '../../../Features/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpdateUser } from '../../../Features/authSlice';
 import { Switch } from '@rneui/themed';
-import DropDownPicker from 'react-native-dropdown-picker';
 const Admin = ({navigation}) => {
   const data = useSelector((state) => state?.Auth?.Admin);
   const dispatch = useDispatch();

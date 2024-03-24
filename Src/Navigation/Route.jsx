@@ -1,71 +1,66 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { getData } from '../Utility/Storage/Storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import navgiationStrings from '../Constant/navgiationStrings';
-import {  ForgotPassword, Login, NewPassword, Register, Slider, VerifyPassword, } from '../Screens/index';
+import { ForgotPassword, Login, NewPassword, Register, Slider, VerifyPassword } from '../Screens/index';
 import Navigator from './Tab Navigation/Navigator';
-
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AdminNavigator from './Tab Navigation/AdminNavigator';
-import { Users } from '../Admin/Screens/Index';
-const Route  = () => {
-  // const data = useSelector((state) => state.token.token);
-  // const [token, setToken] = useState('');
+import MyDrawer from '../Admin/Screens/Drawer/UserDrawer';
+import { persistUserSession } from '../Features/authSlice';
+
+const Route = () => {
   const Stack = createNativeStackNavigator();
+  const userData = useSelector((state) => state?.Auth?.User);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // console.log('token',token)
-  // console.log('data',data)
-  // useEffect(() => {
-  //   fetchData();
-  //   // Fetch data when the component mounts
-  // }, []);
 
-  // const fetchData = async () => {
-  //   const fetchedToken = await getData();
-  //   setToken(fetchedToken);
-  // };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(persistUserSession());
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    if (userData && userData.user) {
+      setLoggedIn(true);
+      if (userData.user.role === 'admin' || userData.user.role === 'superAdmin') {
+        setIsAdmin(true);
+      }
+    }
+  }, [userData]);
+
   return (
     <NavigationContainer>
-       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={'Login'}>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ? 'Navigator' : 'Login'}>
+        {loggedIn ? (
+          <>
+            {isAdmin ? (
 
-       <Stack.Screen name={'Navigator'} component={Navigator} /> 
-       <Stack.Screen name={'AdminNavigator'} component={AdminNavigator} /> 
-       <Stack.Screen name={navgiationStrings.Users} component={Users} /> 
+              <>    
+              <Stack.Screen name={'AdminNavigator'} component={AdminNavigator} />
+              <Stack.Screen name={'Drawer'} component={MyDrawer} />
 
+              </>
 
-       <Stack.Screen name={navgiationStrings.Login} component={Login} />
-      <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
-      <Stack.Screen name={navgiationStrings.Register} component={Register} />
-
-      <Stack.Screen name={navgiationStrings.ForgotPassword} component={ForgotPassword} />
-    <Stack.Screen name={navgiationStrings.VerifyPassword} component={VerifyPassword} />
-      <Stack.Screen name={navgiationStrings.NewPassword} component={NewPassword} />
-
-
-
-    {/* {token ? (
-
-    <Stack.Group>   
-  <Stack.Screen name={'Navigator'} component={Navigator} /> 
-      
-   
-
-      </Stack.Group>
-      ) : ( 
-<Stack.Group>  
-      <Stack.Screen name={navgiationStrings.Login} component={Login} />
-      <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
-      <Stack.Screen name={navgiationStrings.Register} component={Register} />
-
-      <Stack.Screen name={navgiationStrings.ForgotPassword} component={ForgotPassword} />
-    <Stack.Screen name={navgiationStrings.VerifyPassword} component={VerifyPassword} />
-      <Stack.Screen name={navgiationStrings.NewPassword} component={NewPassword} />
-      </Stack.Group>
-      )} */}
+            ) : (
+              <Stack.Screen name={'Navigator'} component={Navigator} />
+            )}
+        
+          </>
+        ) : (
+          <>
+            <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
+            <Stack.Screen name={navgiationStrings.Login} component={Login} />
+            <Stack.Screen name={navgiationStrings.Register} component={Register} />
+          </>
+        )}
       </Stack.Navigator>
-</NavigationContainer>
-  )
-}
+    </NavigationContainer>
+  );
+};
 
-export default  Route
+export default Route;

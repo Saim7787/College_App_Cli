@@ -1,12 +1,16 @@
-import React from 'react'
-import { Provider } from 'react-redux'
+import React, { useEffect } from 'react'
+import { Provider, useDispatch } from 'react-redux'
 import { store } from './Src/App/Store'
 import { Theme } from './Src/Theme/ThemeContext'
 import Route from './Src/Navigation/Route'
 import { ThemeProvider, createTheme } from '@rneui/themed';
 import Toast from 'react-native-toast-message'
-const App = () => {
 
+import {enableLatestRenderer} from 'react-native-maps';
+
+enableLatestRenderer();
+const App = () => {
+ 
  
   return (
     <>    
@@ -14,17 +18,18 @@ const App = () => {
       <ThemeProvider>   
       <Theme>   
 
-<Route/> 
+        <Route/> 
       </Theme>
 
       
     </ThemeProvider>
-    </Provider>
-
-<Toast
+    <Toast
 position='top'
 bottomOffset={20}
 />
+    </Provider>
+
+
 </>
   )
 }

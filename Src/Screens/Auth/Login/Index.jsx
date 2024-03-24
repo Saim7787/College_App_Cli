@@ -46,7 +46,7 @@ const dispatch = useDispatch()
             navigation.replace('Navigator');
           } else {
     
-            navigation.replace('AdminNavigator');
+            navigation.replace('AdminNavigator'); 
           }
         } 
       }}
