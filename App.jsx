@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from '@rneui/themed';
 import Toast from 'react-native-toast-message'
 
 import {enableLatestRenderer} from 'react-native-maps';
+import { NavigationContainer } from '@react-navigation/native'
 
 enableLatestRenderer();
 const App = () => {
@@ -17,8 +18,12 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider>   
       <Theme>   
+      <NavigationContainer>
 
-        <Route/> 
+        <Route/>
+
+    </NavigationContainer>
+
       </Theme>
 
       

@@ -15,13 +15,13 @@ const AdminProfile = () => {
 const navigation =  useNavigation()
 const dispatch = useDispatch()
 
-  const logout = () =>{
-const res = dispatch(logoutUserAsync())
-console.log('res',res)
+  const logout = async() =>{
 
-navigation.navigate('ParentNavigatorName', {
-  screen: 'Login',
-});
+
+await dispatch(logoutUserAsync());
+  
+// Navigate to the login screen after the logout action is completed
+navigation.navigate('Login');
   }
 
   const darkModeImageSource = themeContext?.isDarkTheme

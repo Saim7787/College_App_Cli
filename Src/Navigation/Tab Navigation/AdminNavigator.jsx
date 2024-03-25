@@ -12,6 +12,8 @@ import AdminProfile from '../../Admin/Screens/AdminProfile/Index';
 import Admin from '../../Admin/Screens/Admin/Admin';
 import { useSelector } from 'react-redux';
 import { Users } from '../../Admin/Screens/Index';
+import { useRef } from 'react';
+
 const Tab = createBottomTabNavigator();
 
 
@@ -122,11 +124,9 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 };
 
 const AdminNavigator = () => {
-
   const data = useSelector((state) => state?.Auth?.User);
-
   return (
-    <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
+    <Tab.Navigator tabBar={(props) => <CustomTabBar {...props}  />}>
      
       <Tab.Screen name="Home" component={AdminDashboard} options={{ headerShown: false }} />
       {/* <Tab.Screen name="Users" component={Users} options={{ headerShown: false }} /> */}

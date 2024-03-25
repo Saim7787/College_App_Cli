@@ -43,10 +43,16 @@ const dispatch = useDispatch()
           if (res.payload.user.role === "user") {
     
           
-            navigation.replace('Navigator');
+            navigation.replace('Navigator',{
+              screen:"Home"
+            });
+
+
           } else {
     
-            navigation.replace('AdminNavigator'); 
+            navigation.replace('AdminNavigator',{
+              screen:"Home"
+            }); 
           }
         } 
       }}

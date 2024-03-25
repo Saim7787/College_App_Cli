@@ -34,17 +34,16 @@ const Route = () => {
   }, [userData]);
 
   return (
-    <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ? 'Navigator' : 'Login'}>
         {loggedIn ? (
           <>
             {isAdmin ? (
 
-              <>    
+              <Stack.Group>    
               <Stack.Screen name={'AdminNavigator'} component={AdminNavigator} />
               <Stack.Screen name={'Drawer'} component={MyDrawer} />
 
-              </>
+              </Stack.Group>
 
             ) : (
               <Stack.Screen name={'Navigator'} component={Navigator} />
@@ -52,14 +51,13 @@ const Route = () => {
         
           </>
         ) : (
-          <>
+          <Stack.Group>
             <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
-            <Stack.Screen name={navgiationStrings.Login} component={Login} />
+            <Stack.Screen name={'Login'} component={Login} />
             <Stack.Screen name={navgiationStrings.Register} component={Register} />
-          </>
+          </Stack.Group>
         )}
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

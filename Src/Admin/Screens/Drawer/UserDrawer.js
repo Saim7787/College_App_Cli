@@ -13,8 +13,16 @@ function MyDrawer({route, navigation}) {
     <Drawer.Navigator screenOptions={{
       headerTitleAlign: 'center',
       headerTitle: props => (
-        <Text style={{ fontFamily: FONTFAMILY.Poppins_SemiBold, fontSize: 16 }}>{props.children}</Text>
+        <Text style={{ fontFamily: FONTFAMILY.Poppins_SemiBold, fontSize: 16,color:"#fff" }}>{props.children}</Text>
       ),
+      headerStyle: { backgroundColor: '#0961F5' },
+      drawerContentStyle: {
+        color: '#fff', // Background color for the drawer
+      },
+      drawerContentContainerStyle: {
+        color: '#fff', // Background color for the drawer
+
+      },
       drawerLabelStyle: {
         fontFamily: FONTFAMILY.Poppins_SemiBold,
         fontSize: 14

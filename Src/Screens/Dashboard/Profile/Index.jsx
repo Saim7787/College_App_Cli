@@ -19,12 +19,14 @@ const Index = () => {
 const navigation =  useNavigation()
 const dispatch = useDispatch()
 
-  const logout = () =>{
-const res = dispatch(logoutUserAsync())
-console.log('res',res)
+const logout = async () => {
+  // Dispatch the logout action
+  await dispatch(logoutUserAsync());
+  
+  // Navigate to the login screen after the logout action is completed
+  navigation.navigate('Login');
+};
 
-navigation.navigate('Login')
-  }
 
   const darkModeImageSource = themeContext?.isDarkTheme
   ? require('../../../Assets/Dashboard/More/light_mode.png')

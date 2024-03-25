@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, TouchableOpacity, View, Text, Platform } from 'react-native';
 import { lightTheme, darkTheme } from '../../Theme/Color';
@@ -116,8 +116,9 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 };
 
 const Navigator = () => {
+
   return (
-    <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
+    <Tab.Navigator tabBar={(props) => <CustomTabBar {...props}    />}>
      
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
 
