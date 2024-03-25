@@ -7,7 +7,8 @@ import { FONTFAMILY } from '../../../Theme/FontFamily';
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
+function MyDrawer({route, navigation}) {
+  console.log('params', route.params);
   return (
     <Drawer.Navigator screenOptions={{
       headerTitleAlign: 'center',

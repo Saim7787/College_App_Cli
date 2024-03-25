@@ -58,7 +58,7 @@ console.log('data',data)
     const watchId = Geolocation.watchPosition(
       position => {
         setLocation(position);
-        emitLocation(); // Emit updated location
+       
       },
       error => {
         setErrorMsg('Error while watching position');
@@ -75,6 +75,8 @@ console.log('data',data)
   useEffect(() => {
     if (location) {
       // Ensure data is available before attempting to emit location
+
+
       if (!data) {
         return;
       }
@@ -92,6 +94,8 @@ console.log('data',data)
       };
   
       socket.emit('location', locationData);
+console.log('emit location',locationData)
+
     }
   }, [location, data]); // Add data dependency to useEffect
   
@@ -108,13 +112,7 @@ console.log('data',data)
   }, []);
 
   // Function to emit location data
-  const emitLocation = () => {
-    if (socket) {
-   
-      socket.emit('startLocationTracking',data?.user?.id);
-      console.log('emit location')
-    }
-  };
+ 
 
   let text = 'Waiting..';
   if (errorMsg) {

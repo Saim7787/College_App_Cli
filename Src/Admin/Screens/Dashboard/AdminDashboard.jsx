@@ -18,6 +18,9 @@ const navigation = useNavigation()
     dispatch(getActiveSessions());
   }, [dispatch]);
 
+
+  console.log('activ user data',ActiveUserData)
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredData = ActiveUserData.filter(
@@ -26,11 +29,13 @@ const navigation = useNavigation()
   );
 
   const renderItem = ({ item }) => (
-    <Pressable style={{ padding: 10 }} onPress={()=> navigation.navigate('Drawer')}>
+    
+    <Pressable style={{ padding: 10 }} onPress={() => navigation.navigate('Drawer', { screen: 'Home',params: { userId: item.id},})}>
       <Text style={[styles.header_subheading, { color: theme.PrimarylightText }]}>Name : {item.userName}</Text>
       <Text style={[styles.header_subheading, { color: theme.PrimarylightText }]}>Admin Ref : {item.adminRef}</Text>
     </Pressable>
   );
+  
 
   const searchImageSource = require('../../../Assets/Dashboard/Home/Search.png');
   const searchImageStyle = themeContext?.isDarkTheme
@@ -62,7 +67,7 @@ const navigation = useNavigation()
       <FlatList
         data={filteredData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
     </ScrollView>
   );
