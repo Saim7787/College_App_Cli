@@ -43,5 +43,29 @@ Profile_id:{
     textAlign:'center',
     marginTop:SPACING.space_8
 
-}
+},
+tileContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: 10,
+  margin: 5,
+},
+leftImage: {
+  width: 22,
+  height: 20,
+  marginRight: 10,
+},
+rightImage: {
+  width: 10,
+  height: 17,
+  marginLeft: 10,
+},
+textContainer: {
+  flex: 1,
+  flexDirection: 'column',
+},
+title: {
+  fontSize: FONTSIZE.size_14,
+fontFamily:FONTFAMILY.Mulish_Bold
+},
 })

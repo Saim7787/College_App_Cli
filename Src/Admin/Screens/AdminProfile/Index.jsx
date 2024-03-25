@@ -19,8 +19,18 @@ const dispatch = useDispatch()
 const res = dispatch(logoutUserAsync())
 console.log('res',res)
 
-navigation.navigate('Login')
+navigation.navigate('ParentNavigatorName', {
+  screen: 'Login',
+});
   }
+
+  const darkModeImageSource = themeContext?.isDarkTheme
+  ? require('../../../Assets/Dashboard/More/light_mode.png')
+  : require('../../../Assets/Dashboard/More/dark_mode.png');
+
+  const darkmode = themeContext?.isDarkTheme
+  ? <Image source={darkModeImageSource} style={[styles.leftImage, { tintColor: 'white' }]} />
+  : <Image source={darkModeImageSource} style={styles.leftImage} />;
  
   return (
     <View style={[styles.container,{backgroundColor:theme.primaryBackground}]}>
@@ -31,6 +41,13 @@ navigation.navigate('Login')
         <Text style={[styles.profile_name, { color: theme.primaryText }]}>{userData?.user.userName}</Text>
         <Text style={[styles.profile_mail, { color: theme.PrimarylightText }]}>{userData?.user.role}</Text>
         <Text style={[styles.Profile_id, { color: theme.PrimarylightText }]}>AdminId :{userData?.user.generatedAdminId}</Text>
+        <TouchableOpacity style={styles.tileContainer} onPress={handletoggletheme}>
+       {darkmode}
+        <View style={styles.textContainer}>
+          <Text style={[styles.title,{color:theme.primaryText}]}>{themeContext?.isDarkTheme ? 'Light Mode' : "Dark Mode"}</Text>
+        </View>
+        
+      </TouchableOpacity>
 
 <Button text={'Logout'} handleSubmit={logout} />
        

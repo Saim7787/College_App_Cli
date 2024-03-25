@@ -18,21 +18,29 @@ const Index = () => {
   const [isConnected, setIsConnected] = useState(false); // State to track socket connection status
   const themeContext = useContext(ThemeContext);
   const data = useSelector((state) => state?.Auth?.User);
-
+console.log('data',data)
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const handletoggletheme = themeContext?.toggleTheme;
 
   useEffect(() => {
     // Connect to your backend server
-    const newSocket = io("https://server-domain.com");
+    const newSocket = io("http://192.168.165.88:8080");
 
     newSocket.on("connect", () => {
       setIsConnected(true);
+      console.log('connect')
     });
+
+
 
     newSocket.on("disconnect", () => {
       setIsConnected(false);
     });
+
+
+    newSocket.on("locationUpdate",(data) => {
+      console.log('update location',data)
+    })
 
     setSocket(newSocket);
 
@@ -45,23 +53,12 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Get the initial position
-    Geolocation.getCurrentPosition(
-      position => {
-        setLocation(position);
-        emitLocation(position.coords.latitude, position.coords.longitude); // Emit initial location
-      },
-      error => {
-        setErrorMsg('Permission to access location was denied');
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-
+ 
     // Watch for position changes
     const watchId = Geolocation.watchPosition(
       position => {
         setLocation(position);
-        emitLocation(position.coords.latitude, position.coords.longitude); // Emit updated location
+        emitLocation(); // Emit updated location
       },
       error => {
         setErrorMsg('Error while watching position');
@@ -76,6 +73,30 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    if (location) {
+      // Ensure data is available before attempting to emit location
+      if (!data) {
+        return;
+      }
+  
+      // Check the value of userId
+      const userId = data?.user?.id;
+      if (!userId) {
+        return;
+      }
+  
+      const locationData = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        userId: userId,
+      };
+  
+      socket.emit('location', locationData);
+    }
+  }, [location, data]); // Add data dependency to useEffect
+  
+
+  useEffect(() => {
     // Get Local and WiFi IP addresses
     NetworkInfo.getIPAddress().then(ipAddress => {
       setLocalIp(ipAddress);
@@ -87,11 +108,11 @@ const Index = () => {
   }, []);
 
   // Function to emit location data
-  const emitLocation = (latitude, longitude) => {
+  const emitLocation = () => {
     if (socket) {
-      // Here you can send the latitude, longitude, and any user ID to the server
-      const userId = data.user.id; // Replace with your user ID logic
-      socket.emit('location', { latitude, longitude, userId });
+   
+      socket.emit('startLocationTracking',data?.user?.id);
+      console.log('emit location')
     }
   };
 

@@ -40,7 +40,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
       : require('../../Assets/Dashboard/Navigator/iconamoon_profile-light.png');
     }  else if (route.name === 'Home') {
       icon = themeContext?.isDarkTheme
-        ? require('../../Assets/Dashboard/Navigator/darkuser.png')
+        ? require('../../Assets/Dashboard/Navigator/darkhome.png')
         : require('../../Assets/Dashboard/Navigator/home.png');
     }
    

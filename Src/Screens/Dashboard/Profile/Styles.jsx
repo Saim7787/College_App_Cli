@@ -34,20 +34,38 @@ export const styles = StyleSheet.create({
     fontSize:FONTSIZE.size_12,
     fontFamily:FONTFAMILY.Mulish_Bold,
     textAlign:'center',
-    marginBottom:SPACING.space_20
+    marginTop:SPACING.space_8
 
 },
-scene: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tab_view:{
-    marginTop:SPACING.space_16
-  },
-  label_tab:{
-    fontSize:FONTSIZE.size_18,
-    fontFamily:FONTFAMILY.Jost_SemiBold,
-    textAlign:'center'
-  }
+Profile_id:{
+  fontSize:FONTSIZE.size_12,
+    fontFamily:FONTFAMILY.Mulish_Bold,
+    textAlign:'center',
+    marginTop:SPACING.space_8
+
+},
+tileContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: 10,
+  margin: 5,
+},
+leftImage: {
+  width: 22,
+  height: 20,
+  marginRight: 10,
+},
+rightImage: {
+  width: 10,
+  height: 17,
+  marginLeft: 10,
+},
+textContainer: {
+  flex: 1,
+  flexDirection: 'column',
+},
+title: {
+  fontSize: FONTSIZE.size_14,
+fontFamily:FONTFAMILY.Mulish_Bold
+},
 })
