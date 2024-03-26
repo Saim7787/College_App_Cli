@@ -1,27 +1,30 @@
-import { FlatList, StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
+import { FlatList, StyleSheet, Text, View, PermissionsAndroid, TextInput, Alert } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from './Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
 import SmsAndroid from 'react-native-get-sms-android';
 import SmsListener from 'react-native-android-sms-listener';
+import { Button } from '@rneui/base';
 
 const SentMessages = () => {
   const [data, setData] = useState([]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
+  const [message, setMessage] = useState('');
   const handleToggleTheme = themeContext?.toggleTheme;
-console.log('data state',data)
   const requestSmsPermission = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.READ_SMS,
-        PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
+        PermissionsAndroid.PERMISSIONS.WRITE_SMS,
+        PermissionsAndroid.PERMISSIONS.SEND_SMS,
       ]);
 
       if (
         granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED
+        granted['android.permission.WRITE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.SEND_SMS'] === PermissionsAndroid.RESULTS.GRANTED // Check if send SMS permission is granted
       ) {
         console.log('SMS permissions granted');
         fetchSmsMessages(); // Permission granted, fetch SMS messages
@@ -100,6 +103,29 @@ console.log('data state',data)
     );
   };
 
+  const sendSMS = () => {
+    if (message.trim() === '') {
+      Alert.alert('Message cannot be empty');
+      return;
+    }
+
+    SmsAndroid.autoSend(
+      '(650) 555-1212', // Replace with the recipient's phone number
+      message,
+      (fail) => {
+        console.log('Failed to send SMS:', fail);
+        Alert.alert('Failed to send SMS');
+      },
+      (success) => {
+        console.log('SMS sent successfully:', success);
+        Alert.alert('SMS sent successfully');
+        // Optionally, you can refresh the SMS list here
+        fetchSmsMessages();
+        setMessage(''); // Clear the input field after sending the SMS
+      },
+    );
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
       <FlatList
@@ -108,6 +134,19 @@ console.log('data state',data)
         renderItem={ItemView}
         keyExtractor={(item, index) => index.toString()}
       />
+
+
+<View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+        <TextInput
+          style={[styles.input, { backgroundColor: theme.secondaryBackground, color: theme.primaryText }]}
+          onChangeText={text => setMessage(text)}
+          value={message}
+          placeholder="Type your message here"
+          placeholderTextColor={theme.placeholderText}
+          multiline={true}
+        />
+        <Button title="Send" onPress={sendSMS} />
+      </View>
     </View>
   );
 };
