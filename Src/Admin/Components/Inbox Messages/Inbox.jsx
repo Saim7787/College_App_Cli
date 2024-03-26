@@ -92,7 +92,8 @@ console.log('data state',data)
         style={{
           height: 0.5,
           width: '100%',
-          backgroundColor: '#000',
+          backgroundColor: theme.primaryText,
+
         }}
       />
     );

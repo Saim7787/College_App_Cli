@@ -3,6 +3,7 @@ import { FONTFAMILY } from "../../../Theme/FontFamily";
 import { FONTSIZE } from "../../../Theme/FontSize";
 import { SPACING } from "../../../Theme/Spacing";
 import { BORDERRADIUS } from "../../../Theme/BorderRadius";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   container: {
@@ -17,8 +18,8 @@ export const styles = StyleSheet.create({
     alignItems:'center',
   },
   header_image:{
-    width:18,
-    height:18
+    width:wp('5%'),
+    height:hp('4%')
   },
   header_heading:{
     fontSize:FONTSIZE.size_24,

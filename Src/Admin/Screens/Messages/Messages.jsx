@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
+import { FlatList, StyleSheet, Text, View, PermissionsAndroid, TextInput } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from '../../Components/SentMessages/Style';
@@ -9,13 +9,14 @@ import RecieveMessage from '../../Components/Inbox Messages/Inbox';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { FONTFAMILY } from '../../../Theme/FontFamily';
 import { FONTSIZE } from '../../../Theme/FontSize';
+import Button from '../../../Component/Footer Button/Index'
 
 const Messages = () => {
   const [data, setData] = useState([]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const handleToggleTheme = themeContext?.toggleTheme;
-
+const [Messages,SetMessage] = useState()
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -55,13 +56,16 @@ const Messages = () => {
 ;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
+    <View style={[styles.container, { backgroundColor: theme.primaryBackground,paddingTop:20 }]}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
         renderTabBar={renderTabBar}
       />
+
+
+ 
     </View>
   );
 };

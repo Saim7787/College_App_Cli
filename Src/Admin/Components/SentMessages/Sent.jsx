@@ -45,8 +45,7 @@ console.log('data state',data)
         console.log('Failed with this error: ' + fail);
       },
       (count, smsList) => {
-        console.log('Count: ', count);
-        console.log('List: ', smsList);
+       
         var arr = JSON.parse(smsList);
 
         setData(arr); 
@@ -94,7 +93,8 @@ console.log('data state',data)
         style={{
           height: 0.5,
           width: '100%',
-          backgroundColor: '#000',
+          backgroundColor: theme.primaryText,
+
         }}
       />
     );

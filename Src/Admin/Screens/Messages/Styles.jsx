@@ -50,33 +50,7 @@ scene: {
     fontFamily:FONTFAMILY.Jost_SemiBold,
     textAlign:'center'
   },
-  userItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  userName: {
-    fontSize: 16,
-    fontFamily:FONTFAMILY.Poppins_SemiBold,
 
-  },
-  userEmail: {
-    fontSize: 14,
-    fontFamily:FONTFAMILY.Poppins_SemiBold,
-
-    color: '#666',
-  },
-  approveButton: {
-    padding: 8,
-    backgroundColor: '#0961F5',
-    borderRadius: 5,
-    fontFamily:FONTFAMILY.Jost_SemiBold,
-    color: '#fff',
-
-  },
   scene: {
     flex: 1,
   },
@@ -92,5 +66,24 @@ scene: {
   button_Text:{
     fontFamily:FONTFAMILY.Jost_SemiBold,
 color:"#fff"
-  }
+  },
+  input: {
+    width: '100%',
+    fontFamily: FONTFAMILY.Mulish_Bold,
+    fontSize: FONTSIZE.size_14,
+    paddingHorizontal: SPACING.space_18,
+    paddingVertical: SPACING.space_2,
+  borderRadius: BORDERRADIUS.radius_12,
+  ...Platform.select({
+    ios: {
+      shadowColor: 'black',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 10,
+    },
+    android: {
+      elevation: 0.5,
+    },
+  }),
+  },
 })

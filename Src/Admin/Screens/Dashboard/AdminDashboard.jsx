@@ -43,7 +43,7 @@ const navigation = useNavigation()
     : styles.search_image;
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container,{backgroundColor:theme.primaryBackground}]} >
       <View style={styles.header}>
         <View>
           <Text style={[styles.header_heading, { color: theme.primaryText }]}>Hi,{data?.user.userName}</Text>
