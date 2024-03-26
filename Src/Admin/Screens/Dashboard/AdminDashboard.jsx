@@ -50,9 +50,7 @@ const navigation = useNavigation()
           <Text style={[styles.header_subheading, { color: theme.PrimarylightText }]}>What Would you like to learn Today?</Text>
           <Text style={[styles.header_subheading, { color: theme.PrimarylightText }]}>Search Below.</Text>
         </View>
-        <TouchableOpacity style={styles.header_right} onPress={() => navigation.navigate('Notification')}>
-          <Image source={require('../../../Assets/Dashboard/Home/notification.png')} style={styles.header_image} />
-        </TouchableOpacity>
+      
       </View>
       <View style={[styles.search_container, { backgroundColor: theme.input_Background, marginBottom: "20" }]}>
         <Image source={searchImageSource} style={searchImageStyle} />

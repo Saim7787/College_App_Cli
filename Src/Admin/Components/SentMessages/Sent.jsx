@@ -17,13 +17,13 @@ const SentMessages = () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.READ_SMS,
-        PermissionsAndroid.PERMISSIONS.WRITE_SMS,
+        PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
         PermissionsAndroid.PERMISSIONS.SEND_SMS,
       ]);
 
       if (
         granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.WRITE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
+        granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
         granted['android.permission.SEND_SMS'] === PermissionsAndroid.RESULTS.GRANTED // Check if send SMS permission is granted
       ) {
         console.log('SMS permissions granted');

@@ -10,7 +10,10 @@ import { GetAdmin } from '../../../Features/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpdateUser } from '../../../Features/authSlice';
 import { Switch } from '@rneui/themed';
+
 const Admin = ({navigation}) => {
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const data = useSelector((state) => state?.Auth?.Admin);
   const dispatch = useDispatch();
 
@@ -83,14 +86,16 @@ const data ={
     return (
       <View style={styles.userItem} key={user.id}>
      
-          <Text style={styles.userName}>{user.userName}</Text>
+        <Text style={[styles.userName,{ color: theme.primaryText }]}>{user.userName}</Text>
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <Text style={styles.userName}>
+      <Text style={[styles.userName,{color: theme.primaryText}]}>
           changed to SuperAdmin
         </Text>
         <Switch
           value={user.role === 'superadmin'} // Assuming 'superadmin' as the super admin role
           onValueChange={(value) => handleRole(user.id, value ? 'superadmin' : 'admin')}
+          backgroundColor={'gray'}
+
         />
       </View>
 
@@ -99,11 +104,12 @@ const data ={
 
 
           <View style={{flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>   
-          <Text  style={styles.userName}>
+          <Text  style={[styles.userName,{color: theme.primaryText}]}>
           User Access   </Text>
               <Switch
                 value={user.fullAccess}
                 onValueChange={(value) => handleAccess(user.id, value)}
+                backgroundColor={'gray'}
               />
         
           </View>
@@ -165,7 +171,7 @@ const data ={
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:theme.primaryBackground}]}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
