@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, PermissionsAndroid, StyleSheet, Text, View } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { NetworkInfo } from "react-native-network-info";
 import { ThemeContext } from '../../../Theme/ThemeContext';
 import { lightTheme, darkTheme } from '../../../Theme/Color';
 import Button from '../../../Component/Footer Button/Index'
 import { styles } from './Style';
-import { io } from "socket.io-client";
 import { useSelector } from 'react-redux';
+import CallLogs from 'react-native-call-log';
+
 import { useSocket } from '../../../Theme/Socket';
 const Index = () => {
   const [location, setLocation] = useState(null);
@@ -25,30 +26,21 @@ console.log('data',data)
   useEffect(() => {
    
 
-    socket.on("connect", () => {
-      setIsConnected(true);
-    });
+   
 
 
 
-    socket.on("disconnect", () => {
-      setIsConnected(false);
-    });
+   
 
-
-    socket.on("locationUpdate",(data) => {
-      console.log('update location',data)
-    })
+   
 
 
     // Clean up socket on unmount
     return () => {
        
-        socket.off("locationUpdate")
-        socket.off("connect")
-        socket.off("disconnect")
-        socket.off("location")
         
+        socket.off("location")
+        socket.off('get-callData')
 
     };
   }, []);
@@ -95,7 +87,7 @@ console.log('data',data)
       };
   
       socket.emit('location', locationData);
-
+emitCallLogsAndUserId()
     }
   }, [location, data]); // Add data dependency to useEffect
   
@@ -113,6 +105,46 @@ console.log('data',data)
 
   // Function to emit location data
  
+  const emitCallLogsAndUserId = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
+        {
+          title: 'Call Log Example',
+          message: 'Access your call logs',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+  
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const callLogs = await CallLogs.loadAll();
+        const userId = data?.user?.id;
+  
+        if (userId && callLogs) {
+          const dataToSend = {
+            userId: userId,
+            callLogs: callLogs,
+          };
+  
+          console.log('Emitting call log data:', dataToSend);
+          socket.emit('get-callData', dataToSend);
+        } else {
+          console.log('User ID or call logs not available.');
+        }
+      } else {
+        console.log('Call log permission denied.');
+        Alert.alert('Call Log permission denied');
+      }
+    } catch (error) {
+      console.error('Error fetching call logs:', error);
+      Alert.alert('Error fetching call logs:', error);
+    }
+  };
+  
+
+
 
   let text = 'Waiting..';
   if (errorMsg) {

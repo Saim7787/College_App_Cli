@@ -37,7 +37,7 @@ console.log('userdata',userData)
   
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ? 'Navigator' : 'Login'}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ?userData?.user?.role === 'admin' || userData?.user?.role === 'superAdmin'? "AdminNavigator" :'Navigator' : 'Login'}>
       {loggedIn ? (
         <>
           {isAdmin ? (

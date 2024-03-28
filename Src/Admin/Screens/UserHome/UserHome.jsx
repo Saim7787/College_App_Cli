@@ -11,19 +11,16 @@ const UserHome = () => {
   const [location, setLocation] = useState(null);
   const [locationname, setLocationname] = useState(null);
 
-  const [isConnected, setIsConnected] = useState(false); // State to track socket connection status
 const socket = useSocket()
   const data = useSelector((state) => state?.Auth?.User);
   const route = useRoute();
   const userId = route.params?.userId;
- console.log('id',userId)
   useEffect(() => {
     // Connect to your backend server
 
   
 
     socket.on("locationUpdate",(data) => {
-      console.log('location update',data)
       setLocation(data)
     })
 

@@ -6,6 +6,7 @@ import { ThemeContext } from '../../../Theme/ThemeContext';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from './Style';
 import { useNavigation } from '@react-navigation/native';
+import { Setuserid } from '../../../Features/UserIdSlice';
 
 const AdminDashboard = () => {
   const themeContext = React.useContext(ThemeContext);
@@ -19,7 +20,6 @@ const navigation = useNavigation()
   }, [dispatch]);
 
 
-  console.log('activ user data',ActiveUserData)
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -28,9 +28,20 @@ const navigation = useNavigation()
       item.userName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
+  const setUser = ( itemId) => {
+    // Dispatch action to set user ID
+    dispatch(Setuserid(itemId));
+    
+    // Navigate to another screen
+    navigation.navigate('Drawer', {
+      screen: 'Home',
+      params: { userId: itemId }, // Navigate using itemId
+    });
+  };
   const renderItem = ({ item }) => (
     
-    <Pressable style={{ padding: 10 }} onPress={() => navigation.navigate('Drawer', { screen: 'Home',params: { userId: item.id},})}>
+    <Pressable style={{ padding: 10 }}  onPress={() => setUser( item.id)}>
       <Text style={[styles.header_subheading, { color: theme.PrimarylightText }]}>Name : {item.userName}</Text>
       <Text style={[styles.header_subheading, { color: theme.PrimarylightText }]}>Admin Ref : {item.adminRef}</Text>
     </Pressable>

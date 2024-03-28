@@ -8,52 +8,41 @@ import { TabBar, TabView } from 'react-native-tab-view';
 import { FONTSIZE } from '../../../Theme/FontSize';
 import { FONTFAMILY } from '../../../Theme/FontFamily';
 import { TelephonyManager } from 'react-native';
-
+import { useSelector } from 'react-redux';
+import { useSocket } from '../../../Theme/Socket';
 const Call = () => {
     const [listData, setListDate] = useState([]);
     const [simNumber, setSimNumber] = useState('');
     const themeContext = useContext(ThemeContext);
+const socket = useSocket()
     const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
 
+    const userid = useSelector((state)=> state?.User?.UserId)
+
+console.log('userid',userid)
+console.log('list data',listData)
     useEffect(() => {
-        async function fetchData() {
-            if (Platform.OS === 'android') {
-                try {
-                    const granted = await PermissionsAndroid.request(
-                        PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-                        {
-                            title: 'Call Log Example',
-                            message: 'Access your call logs',
-                            buttonNeutral: 'Ask Me Later',
-                            buttonNegative: 'Cancel',
-                            buttonPositive: 'OK',
-                        },
-                    );
-                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                        CallLogs.loadAll().then((c) => setListDate(c));
-                        CallLogs.load(3).then((c) => console.log(c));
-                    } else {
-                        Alert.alert('Call Log permission denied');
-                    }
-                } catch (e) {
-                    Alert.alert(e);
-                }
+        // Connect to your backend server
+    
+      
+    
+    
+    socket.on("transfer-callData",(data) => {
+          console.log('data',data)
+          setListDate(data)
+        })
+    
+    
+        // Clean up socket on unmount
+        return () => {
+            socket.off('transfer-callData');
+    
+        };
+      }, [socket]);
 
-                // Get SIM card number
-                TelephonyManager.getSimSerialNumber().then(serialNumber => {
-                    setSimNumber(serialNumber);
-                }).catch(error => {
-                    console.log('Error getting SIM serial number:', error);
-                });
-            } else {
-                Alert.alert(
-                    'Sorry! You can’t get call logs in iOS devices because of the security concern',
-                );
-            }
-        }
-        fetchData();
-    }, []);
 
+
+   
     const ItemView = ({ item }) => {
         console.log('call data', item);
         return (
