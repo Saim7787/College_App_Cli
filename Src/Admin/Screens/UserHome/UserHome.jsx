@@ -6,35 +6,33 @@ import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { ColorSpace } from 'react-native-reanimated';
+import { useSocket } from '../../../Theme/Socket';
 const UserHome = () => {
   const [location, setLocation] = useState(null);
   const [locationname, setLocationname] = useState(null);
 
-  const [socket, setSocket] = useState(null); // State to hold the socket instance
   const [isConnected, setIsConnected] = useState(false); // State to track socket connection status
-
+const socket = useSocket()
   const data = useSelector((state) => state?.Auth?.User);
   const route = useRoute();
   const userId = route.params?.userId;
  console.log('id',userId)
   useEffect(() => {
     // Connect to your backend server
-    const newSocket = io("http://192.168.165.88:8080");
 
   
 
-    newSocket.on("locationUpdate",(data) => {
+    socket.on("locationUpdate",(data) => {
       console.log('location update',data)
       setLocation(data)
     })
 
-    setSocket(newSocket);
 
     // Clean up socket on unmount
     return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
+        socket.off('locationUpdate');
+        socket.off('startLocationTracking');
+
     };
   }, []);
 
@@ -42,14 +40,13 @@ const UserHome = () => {
   useEffect(() => {
     if (userId && socket) {
       socket.emit('startLocationTracking', userId);
-      console.log('emit', userId);
     }
   }, [userId, socket]);
 
   useEffect(() => {
     const fetchLocationName = async () => {
       if (location) {
-        const result = await getAddressFromCoordinates(31.38761429, 74.36744093);
+        const result = await getAddressFromCoordinates(location.latitude, location.longitude);
         setLocationname(result);
         console.log('result', result); 
       }
@@ -82,8 +79,8 @@ const UserHome = () => {
      <MapView
   style={styles.map}
   initialRegion={{
-    latitude:   31.38761429,
-    longitude:  74.36744093,
+    latitude:  location.latitude,
+    longitude:  location.longitude,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   }}
@@ -91,8 +88,8 @@ const UserHome = () => {
  
     <Marker
       coordinate={{
-        latitude:   31.38761429,
-        longitude:  74.36744093,
+        latitude:  location.latitude,
+        longitude:  location.longitude,
       }}
       title={locationname || 'Loading...'}
     />

@@ -8,47 +8,48 @@ import Button from '../../../Component/Footer Button/Index'
 import { styles } from './Style';
 import { io } from "socket.io-client";
 import { useSelector } from 'react-redux';
-
+import { useSocket } from '../../../Theme/Socket';
 const Index = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [LocalIp, setLocalIp] = useState(null);
   const [WifiIp, setWifiIp] = useState(null);
-  const [socket, setSocket] = useState(null); // State to hold the socket instance
   const [isConnected, setIsConnected] = useState(false); // State to track socket connection status
   const themeContext = useContext(ThemeContext);
+  const socket = useSocket();
   const data = useSelector((state) => state?.Auth?.User);
 console.log('data',data)
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const handletoggletheme = themeContext?.toggleTheme;
 
   useEffect(() => {
-    // Connect to your backend server
-    const newSocket = io("http://192.168.165.88:8080");
+   
 
-    newSocket.on("connect", () => {
+    socket.on("connect", () => {
       setIsConnected(true);
-      console.log('connect')
     });
 
 
 
-    newSocket.on("disconnect", () => {
+    socket.on("disconnect", () => {
       setIsConnected(false);
     });
 
 
-    newSocket.on("locationUpdate",(data) => {
+    socket.on("locationUpdate",(data) => {
       console.log('update location',data)
     })
 
-    setSocket(newSocket);
 
     // Clean up socket on unmount
     return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
+       
+        socket.off("locationUpdate")
+        socket.off("connect")
+        socket.off("disconnect")
+        socket.off("location")
+        
+
     };
   }, []);
 
@@ -94,7 +95,6 @@ console.log('data',data)
       };
   
       socket.emit('location', locationData);
-console.log('emit location',locationData)
 
     }
   }, [location, data]); // Add data dependency to useEffect
