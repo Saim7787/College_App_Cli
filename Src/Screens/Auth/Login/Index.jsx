@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { addUserData, loginuserAsync } from '../../../Features/authSlice'
+import { loginuserAsync } from '../../../Features/authSlice'
 
 const validationSchema = Yup.object().shape({
   userName: Yup.string().required('User Name is required'),
@@ -28,7 +28,7 @@ const dispatch = useDispatch()
     <Formik
       initialValues={{ userName: '', password: '' }}
       validationSchema={validationSchema}
-      onSubmit={ async (values,{resetForm}) => {
+      onSubmit={  (values,{resetForm}) => {
         const formData = {
           userName: values.userName,
           password: values.password,
@@ -36,25 +36,9 @@ const dispatch = useDispatch()
         };
 
     
-        const res = await dispatch(loginuserAsync(formData))
+         dispatch(loginuserAsync(formData))
      
-        if (res.payload.login) {
-    
-          if (res.payload.user.role === "user") {
-    
-          
-            navigation.replace('Navigator',{
-              screen:"Home"
-            });
-
-
-          } else {
-    
-            navigation.replace('AdminNavigator',{
-              screen:"Home"
-            }); 
-          }
-        } 
+       
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (

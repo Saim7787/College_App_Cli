@@ -15,7 +15,7 @@ const RecieveMessage = () => {
   const handleToggleTheme = themeContext?.toggleTheme;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
-
+console.log('data',data)
   const requestSmsPermission = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([

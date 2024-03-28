@@ -25,17 +25,10 @@ console.log('data',data)
 
   useEffect(() => {
    
+    socket.on('transfer-callData',(data)=>{
+      console.log('call data from server',data)
+    })
 
-   
-
-
-
-   
-
-   
-
-
-    // Clean up socket on unmount
     return () => {
        
         
@@ -43,7 +36,7 @@ console.log('data',data)
         socket.off('get-callData')
 
     };
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
  

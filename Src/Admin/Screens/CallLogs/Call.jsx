@@ -4,10 +4,7 @@ import CallLogs from 'react-native-call-log';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from './Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
-import { TabBar, TabView } from 'react-native-tab-view';
-import { FONTSIZE } from '../../../Theme/FontSize';
-import { FONTFAMILY } from '../../../Theme/FontFamily';
-import { TelephonyManager } from 'react-native';
+
 import { useSelector } from 'react-redux';
 import { useSocket } from '../../../Theme/Socket';
 const Call = () => {
@@ -19,8 +16,7 @@ const socket = useSocket()
 
     const userid = useSelector((state)=> state?.User?.UserId)
 
-console.log('userid',userid)
-console.log('list data',listData)
+
     useEffect(() => {
         // Connect to your backend server
     
@@ -28,20 +24,21 @@ console.log('list data',listData)
     
     
     socket.on("transfer-callData",(data) => {
-          console.log('data',data)
+          console.log('callldata',data)
           setListDate(data)
         })
     
     
         // Clean up socket on unmount
         return () => {
-            socket.off('transfer-callData');
+            // socket.off('transfer-callData');
     
         };
       }, [socket]);
 
 
-
+      console.log('userid',userid)
+      console.log('list data',listData)
    
     const ItemView = ({ item }) => {
         console.log('call data', item);
