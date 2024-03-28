@@ -23,7 +23,7 @@ const navigation = useNavigation()
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredData = ActiveUserData.filter(
+  const filteredData = ActiveUserData?.filter(
     (item) =>
       item.userName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -43,7 +43,7 @@ const navigation = useNavigation()
     : styles.search_image;
 
   return (
-    <ScrollView style={[styles.container,{backgroundColor:theme.primaryBackground}]} >
+    <View style={[styles.container,{backgroundColor:theme.primaryBackground}]} >
       <View style={styles.header}>
         <View>
           <Text style={[styles.header_heading, { color: theme.primaryText }]}>Hi,{data?.user.userName}</Text>
@@ -67,7 +67,7 @@ const navigation = useNavigation()
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-    </ScrollView>
+    </View>
   );
 };
 

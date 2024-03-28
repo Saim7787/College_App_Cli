@@ -60,12 +60,11 @@ const Call = () => {
             // FlatList Item
             <View style={{ backgroundColor: theme.primaryBackground, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>
                 <View>
-                    <Text style={[styles.newsDate, { color: theme.primaryText }]}>{item.name ? item.name : 'NA'} </Text>
-                    <Text style={[styles.newsDate, { color: theme.primaryText }]}> {item.phoneNumber} </Text>
+                    <Text style={[styles.newsDate, { color: theme.primaryText }]}>Contact Name:{item.name ? item.name : 'NA'} </Text>
+                    <Text style={[styles.newsDate, { color: theme.primaryText }]}> Contact Number:{item.phoneNumber} </Text>
                     <Text style={[styles.newsDate, { color: theme.primaryText }]}> {item.dateTime} </Text>
-                    <Text style={[styles.newsDate, { color: theme.primaryText }]}> {item.duration} </Text>
-                    <Text style={[styles.newsDate, { color: theme.primaryText }]}> {item.rawType} </Text>
-                    <Text style={[styles.newsDate, { color: theme.primaryText }]}> {item.timestamp} </Text>
+                    <Text style={[styles.newsDate, { color: theme.primaryText }]}> Duration:{item.duration} </Text>
+                    
                 </View>
                 <Text style={[styles.newsDate, { color: theme.primaryText }]}> {item.type} </Text>
             </View>
@@ -87,7 +86,6 @@ const Call = () => {
 
     return (
         <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
-            <Text style={[styles.newsDate, { color: theme.primaryText }]}>SIM Number: {simNumber}</Text>
             <FlatList
                 data={listData}
                 //data defined in constructor

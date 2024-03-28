@@ -20,11 +20,10 @@ const navigation =  useNavigation()
 const dispatch = useDispatch()
 
 const logout = async () => {
-  // Dispatch the logout action
-  await dispatch(logoutUserAsync());
   
-  // Navigate to the login screen after the logout action is completed
-  navigation.navigate('Login');
+   dispatch(logoutUserAsync());
+  
+ 
 };
 
 

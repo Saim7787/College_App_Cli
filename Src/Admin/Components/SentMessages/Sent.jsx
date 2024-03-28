@@ -6,13 +6,19 @@ import { ThemeContext } from '../../../Theme/ThemeContext';
 import SmsAndroid from 'react-native-get-sms-android';
 import SmsListener from 'react-native-android-sms-listener';
 import { Button } from '@rneui/base';
+import { format } from 'date-fns';
 
 const SentMessages = () => {
   const [data, setData] = useState([]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const [message, setMessage] = useState('');
+  const [recipientNumber, setRecipientNumber] = useState('');
   const handleToggleTheme = themeContext?.toggleTheme;
+  
+console.log('data',data)
+
+
   const requestSmsPermission = async () => {
     try {
       const granted = await PermissionsAndroid.requestMultiple([
@@ -56,6 +62,15 @@ const SentMessages = () => {
     );
   };
 
+  const convertDate = (timestamp) => {
+    // Convert timestamp to JavaScript Date object in milliseconds
+    const date = new Date(timestamp);
+
+    // Format the date using date-fns (example format: "yyyy-MM-dd HH:mm:ss")
+    const formattedDate = format(date, 'yyyy-MM-dd HH:mm:ss');
+    return formattedDate;
+  };
+
   useEffect(() => {
     requestSmsPermission(); // Request SMS permissions when component mounts
 
@@ -74,7 +89,7 @@ const SentMessages = () => {
   }, []);
 
   const ItemView = ({ item }) => {
-    console.log('data', item);
+    const formattedDate = convertDate(item.date); 
     return (
         <View style={{ backgroundColor: theme.primaryBackground ,display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
         <View style={{display:'flex'}}>   
@@ -82,7 +97,7 @@ const SentMessages = () => {
         <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.body} </Text>
          
         </View>
-        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.date} </Text>
+        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {formattedDate} </Text>
 
 
         
@@ -103,28 +118,30 @@ const SentMessages = () => {
     );
   };
 
-  const sendSMS = () => {
-    if (message.trim() === '') {
-      Alert.alert('Message cannot be empty');
-      return;
-    }
+ const sendSMS = async () => {
+  if (message.trim() === '') {
+    Alert.alert('Message cannot be empty');
+    return;
+  }
 
-    SmsAndroid.autoSend(
-      '(650) 555-1212', // Replace with the recipient's phone number
-      message,
-      (fail) => {
-        console.log('Failed to send SMS:', fail);
-        Alert.alert('Failed to send SMS');
-      },
-      (success) => {
-        console.log('SMS sent successfully:', success);
-        Alert.alert('SMS sent successfully');
-        // Optionally, you can refresh the SMS list here
-        fetchSmsMessages();
-        setMessage(''); // Clear the input field after sending the SMS
-      },
-    );
-  };
+  
+  SmsAndroid.autoSend(
+    recipientNumber, // Replace with the recipient's phone number
+    message,
+    (fail) => {
+      console.log('Failed to send SMS:', fail);
+      Alert.alert('Failed to send SMS');
+    },
+    (success) => {
+      console.log('SMS sent successfully:', success);
+      Alert.alert('SMS sent successfully');
+      // Optionally, you can refresh the SMS list here
+      fetchSmsMessages();
+      setMessage(''); // Clear the input field after sending the SMS
+    },
+  );
+};
+
 
   return (
     <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
@@ -135,10 +152,17 @@ const SentMessages = () => {
         keyExtractor={(item, index) => index.toString()}
       />
 
-
+<TextInput
+          style={[styles.input, { backgroundColor: theme.input_Background, color: theme.primaryText,width:'100%',borderRadius:10,marginBottom:5 }]}
+          onChangeText={Number => setRecipientNumber(Number)}
+          value={recipientNumber}
+          placeholder="Type your Number here"
+          placeholderTextColor={theme.placeholderText}
+inputMode='text'
+/>
 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
         <TextInput
-          style={[styles.input, { backgroundColor: theme.secondaryBackground, color: theme.primaryText }]}
+          style={[styles.input, { backgroundColor: theme.input_Background, color: theme.primaryText,flex:1,borderRadius:10 }]}
           onChangeText={text => setMessage(text)}
           value={message}
           placeholder="Type your message here"

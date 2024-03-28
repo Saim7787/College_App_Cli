@@ -12,16 +12,14 @@ const AdminProfile = () => {
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
   const handletoggletheme = themeContext?.toggleTheme
   const userData = useSelector((state) => state?.Auth?.User);
-const navigation =  useNavigation()
 const dispatch = useDispatch()
 
   const logout = async() =>{
 
 
-await dispatch(logoutUserAsync());
+ dispatch(logoutUserAsync());
   
 // Navigate to the login screen after the logout action is completed
-navigation.navigate('Login');
   }
 
   const darkModeImageSource = themeContext?.isDarkTheme

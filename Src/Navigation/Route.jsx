@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { getData } from '../Utility/Storage/Storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import navgiationStrings from '../Constant/navgiationStrings';
@@ -15,14 +15,13 @@ const Route = () => {
   const userData = useSelector((state) => state?.Auth?.User);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
-
+  const navigation = useNavigation(); 
+console.log('userdata',userData)
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(persistUserSession());
   }, [dispatch]);
-
 
   useEffect(() => {
     if (userData && userData.user) {
@@ -30,34 +29,34 @@ const Route = () => {
       if (userData.user.role === 'admin' || userData.user.role === 'superAdmin') {
         setIsAdmin(true);
       }
+    } else {
+      setLoggedIn(false);
+
     }
-  }, [userData]);
+  }, [userData, navigation]); 
+  
 
   return (
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ? 'Navigator' : 'Login'}>
-        {loggedIn ? (
-          <>
-            {isAdmin ? (
-
-              <Stack.Group>    
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ? 'Navigator' : 'Login'}>
+      {loggedIn ? (
+        <>
+          {isAdmin ? (
+            <Stack.Group>    
               <Stack.Screen name={'AdminNavigator'} component={AdminNavigator} />
               <Stack.Screen name={'Drawer'} component={MyDrawer} />
-
-              </Stack.Group>
-
-            ) : (
-              <Stack.Screen name={'Navigator'} component={Navigator} />
-            )}
-        
-          </>
-        ) : (
-          <Stack.Group>
-            <Stack.Screen name={'Login'} component={Login} />
-            <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
-            <Stack.Screen name={navgiationStrings.Register} component={Register} />
-          </Stack.Group>
-        )}
-      </Stack.Navigator>
+            </Stack.Group>
+          ) : (
+            <Stack.Screen name={'Navigator'} component={Navigator} />
+          )}
+        </>
+      ) : (
+        <Stack.Group>
+          <Stack.Screen name={'Login'} component={Login} />
+          <Stack.Screen name={navgiationStrings.Slider} component={Slider} />
+          <Stack.Screen name={navgiationStrings.Register} component={Register} />
+        </Stack.Group>
+      )}
+    </Stack.Navigator>
   );
 };
 

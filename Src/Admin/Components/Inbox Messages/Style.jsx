@@ -105,5 +105,25 @@ rowGap:10,
     fontWeight: 'bold',
     color: 'white',
   },
-
+  container_modal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
+  buttonContainer_modal: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%', // Adjust the width as needed
+    alignItems: 'center',
+  },
+  button_modal: {
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
 })
