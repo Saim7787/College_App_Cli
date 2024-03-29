@@ -1,18 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
- // Import MapView component from react-native-maps
-import { io } from 'socket.io-client';
-import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
-import { ColorSpace } from 'react-native-reanimated';
 import { useSocket } from '../../../Theme/Socket';
 const UserHome = () => {
   const [location, setLocation] = useState(null);
   const [locationname, setLocationname] = useState(null);
 
 const socket = useSocket()
-  const data = useSelector((state) => state?.Auth?.User);
   const route = useRoute();
   const userId = route.params?.userId;
   useEffect(() => {

@@ -1,6 +1,5 @@
 import { FlatList, PermissionsAndroid, StyleSheet, Text, View, Platform, Alert } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
-import CallLogs from 'react-native-call-log';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from './Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
@@ -9,23 +8,28 @@ import { useSelector } from 'react-redux';
 import { useSocket } from '../../../Theme/Socket';
 const Call = () => {
     const [listData, setListDate] = useState([]);
-    const [simNumber, setSimNumber] = useState('');
     const themeContext = useContext(ThemeContext);
+    const userid = useSelector((state)=> state?.User?.Id)
+
 const socket = useSocket()
     const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
+   
 
-    const userid = useSelector((state)=> state?.User?.UserId)
 
+
+
+   
 
     useEffect(() => {
         // Connect to your backend server
     
       
     
+        socket.emit("send-callDataUserId",userid)
     
-    socket.on("transfer-callData",(data) => {
-          console.log('callldata',data)
-          setListDate(data)
+    socket.on("send-callData",(data) => {
+         
+          setListDate(data.calls)
         })
     
     
@@ -37,11 +41,8 @@ const socket = useSocket()
       }, [socket]);
 
 
-      console.log('userid',userid)
-      console.log('list data',listData)
    
     const ItemView = ({ item }) => {
-        console.log('call data', item);
         return (
             // FlatList Item
             <View style={{ backgroundColor: theme.primaryBackground, display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row" }}>

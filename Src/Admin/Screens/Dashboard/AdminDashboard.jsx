@@ -6,7 +6,7 @@ import { ThemeContext } from '../../../Theme/ThemeContext';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from './Style';
 import { useNavigation } from '@react-navigation/native';
-import { Setuserid } from '../../../Features/UserIdSlice';
+import { Setid, Setuserid } from '../../../Features/UserSlice';
 
 const AdminDashboard = () => {
   const themeContext = React.useContext(ThemeContext);
@@ -31,7 +31,8 @@ const navigation = useNavigation()
 
   const setUser = ( itemId) => {
     // Dispatch action to set user ID
-    dispatch(Setuserid(itemId));
+    console.log('Dispatching Setuserid action with itemId:', itemId);
+    dispatch(Setid(itemId));
     
     // Navigate to another screen
     navigation.navigate('Drawer', {

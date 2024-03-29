@@ -16,8 +16,7 @@ function MyDrawer({route, navigation}) {
   const themeContext = useContext(ThemeContext);
     const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
 
-  
-  console.log('params', route.params);
+   
   return (
     <Drawer.Navigator screenOptions={{
       headerTitleAlign: 'center',

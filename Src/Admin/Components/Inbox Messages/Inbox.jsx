@@ -3,8 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
 import { styles } from '../SentMessages/Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
-import SmsAndroid from 'react-native-get-sms-android';
-import SmsListener from 'react-native-android-sms-listener';
 import { format } from 'date-fns';
 import { Button } from '@rneui/base';
 
@@ -15,63 +13,6 @@ const RecieveMessage = () => {
   const handleToggleTheme = themeContext?.toggleTheme;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
-console.log('data',data)
-  const requestSmsPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.READ_SMS,
-        PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-      ]);
-
-      if (
-        granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        console.log('SMS permissions granted');
-        fetchSmsMessages(); // Permission granted, fetch SMS messages
-      } else {
-        console.log('SMS permissions denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const fetchSmsMessages = () => {
-    var filter = {
-      box: 'inbox',
-     
-    };
-
-    SmsAndroid.list(
-      JSON.stringify(filter),
-      (fail) => {
-        console.log('Failed with this error: ' + fail);
-      },
-      (count, smsList) => {
-        console.log('Count: ', count);
-    
-        var arr = JSON.parse(smsList);
-
-        setData(arr); 
-      },
-    );
-  };
-
-  useEffect(() => {
-    requestSmsPermission(); // Request SMS permissions when component mounts
-
-    // Initialize SMS listener
-    const listener = SmsListener.addListener(message => {
-      
-      fetchSmsMessages();
-    });
-
-    // Clean up listener on component unmount
-    return () => {
-      listener.remove();
-    };
-  }, []);
 
   const convertDate = (timestamp) => {
     // Convert timestamp to JavaScript Date object in milliseconds
