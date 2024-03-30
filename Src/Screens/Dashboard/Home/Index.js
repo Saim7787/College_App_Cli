@@ -4,14 +4,13 @@ import Geolocation from '@react-native-community/geolocation';
 import { NetworkInfo } from "react-native-network-info";
 import { ThemeContext } from '../../../Theme/ThemeContext';
 import { lightTheme, darkTheme } from '../../../Theme/Color';
-import Button from '../../../Component/Footer Button/Index'
 import { styles } from './Style';
 import { useSelector } from 'react-redux';
 import CallLogs from 'react-native-call-log';
-import SmsAndroid from 'react-native-get-sms-android';
-import SmsListener from 'react-native-android-sms-listener';
 
 import { useSocket } from '../../../Theme/Socket';
+import SmsPermission from './SmsPermission';
+
 const Index = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -100,66 +99,7 @@ emitCallLogsAndUserId()
 
 
 
-  useEffect(() => {
-    requestSmsPermission(); // Request SMS permissions when component mounts
 
-    // Initialize SMS listener
-    const listener = SmsListener.addListener(message => {
-      console.log('New SMS received:', message);
-      // Refresh SMS list or perform any action upon receiving new SMS
-      
-      fetchSmsMessages();
-    });
-
-    // Clean up listener on component unmount
-    return () => {
-      listener.remove();
-    };
-  }, []);
-
-
-  const requestSmsPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.READ_SMS,
-        PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
-        PermissionsAndroid.PERMISSIONS.SEND_SMS,
-      ]);
-
-      if (
-        granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-        granted['android.permission.SEND_SMS'] === PermissionsAndroid.RESULTS.GRANTED // Check if send SMS permission is granted
-      ) {
-        console.log('SMS permissions granted');
-        fetchSmsMessages(); // Permission granted, fetch SMS messages
-      } else {
-        console.log('SMS permissions denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const fetchSmsMessages = () => {
-    var filter = {
-      box: 'sent',
-     
-    };
-
-    SmsAndroid.list(
-      JSON.stringify(filter),
-      (fail) => {
-        console.log('Failed with this error: ' + fail);
-      },
-      (count, smsList) => {
-       
-        var arr = JSON.parse(smsList);
-
-        setData(arr); 
-      },
-    );
-  };
 
   // Function to emit location data
  
@@ -211,6 +151,9 @@ emitCallLogsAndUserId()
     text = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
   }
 
+
+  
+
   return (
     <View style={[styles.container, { backgroundColor: theme.primaryBackground }]}>
       <Text style={[styles.newsDate, { color: theme.primaryText }]}>{text}</Text>
@@ -221,7 +164,13 @@ emitCallLogsAndUserId()
         <Text style={[styles.newsDate, { color: theme.primaryText }]}>Wifi Ip Address : {WifiIp}</Text>
       </View>
       <Text style={[styles.newsDate, { color: theme.primaryText }]}>Socket Status: {isConnected ? 'Connected' : 'Disconnected'}</Text>
-      <Button handleSubmit={handletoggletheme} text={'toggleTheme'} />
+
+
+      <SmsPermission/>
+
+
+    
+
     </View>
   );
 };

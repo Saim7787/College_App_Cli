@@ -11,8 +11,7 @@ const SentMessages = () => {
   const [data, setData] = useState([]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
-  const [message, setMessage] = useState('');
-  const [recipientNumber, setRecipientNumber] = useState('');
+  
   
 
 
