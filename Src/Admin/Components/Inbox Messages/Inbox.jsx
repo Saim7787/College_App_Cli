@@ -1,10 +1,12 @@
 import { FlatList, StyleSheet, Text, View, PermissionsAndroid,Modal, TouchableOpacity } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
-import { styles } from '../SentMessages/Style';
+import { styles } from './Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
 import { format } from 'date-fns';
 import { Button } from '@rneui/base';
+import { useSocket } from '../../../Theme/Socket';
+import { useSelector } from 'react-redux';
 
 const RecieveMessage = () => {
   const [data, setData] = useState([]);
@@ -13,6 +15,43 @@ const RecieveMessage = () => {
   const handleToggleTheme = themeContext?.toggleTheme;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+
+  const socket = useSocket()
+  const userid = useSelector((state)=> state?.User?.Id)
+
+  console.log('data',data)
+  useEffect(() => {
+    // Connect to your backend server
+
+  
+
+    socket.emit("send-msgDataUserId",userid)
+
+socket.on("send-MsgDataForUser",(data) => {
+  const uniqueData = data.receivedMsgs.reduce((accumulator, currentValue) => {
+    // Check if the current message already exists in accumulator
+    const existingMessageIndex = accumulator.findIndex(item =>
+        item.address === currentValue.address && item.body === currentValue.body
+    );
+
+    // If not found, add it to the accumulator
+    if (existingMessageIndex === -1) {
+        accumulator.push(currentValue);
+    }
+
+    return accumulator;
+}, []);
+
+setData(uniqueData);
+    })
+
+
+    // Clean up socket on unmount
+    return () => {
+        // socket.off('transfer-callData');
+
+    };
+  }, [socket]);
 
   const convertDate = (timestamp) => {
     // Convert timestamp to JavaScript Date object in milliseconds
@@ -77,7 +116,9 @@ const RecieveMessage = () => {
         onRequestClose={closeModal}
         style={[styles.container_modal, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}
       >
-          <View style={[styles.buttonContainer_modal, { backgroundColor: theme.primaryBackground }]}>
+          <View style={[styles.buttonContainer_modal, { backgroundColor: theme.input_Background }]}>
+
+
             <View style={styles.button_modal}>
               <Text style={[styles.newsTitle,{color:theme.primaryText}]}>Message Details</Text>
             </View>

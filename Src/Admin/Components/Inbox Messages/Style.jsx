@@ -112,18 +112,20 @@ rowGap:10,
     backgroundColor: 'red',
   },
   buttonContainer_modal: {
-    backgroundColor: 'white',
     padding: 20,
-    borderRadius: 10,
-    width: '80%', // Adjust the width as needed
-    alignItems: 'center',
+    width: '100%', 
+    flex:1,
+alignSelf:"center",
+justifyContent:"center",
+alignItems:"center"
   },
   button_modal: {
     marginBottom: 10,
   },
   text: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: FONTFAMILY.Mulish_Bold,
+
     marginBottom: 10,
   },
 })

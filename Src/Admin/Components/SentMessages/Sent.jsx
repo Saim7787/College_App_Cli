@@ -1,18 +1,51 @@
-import { FlatList, StyleSheet, Text, View, PermissionsAndroid, TextInput, Alert } from 'react-native';
+import { FlatList, StyleSheet, Text, View, PermissionsAndroid, TextInput, Alert,Modal,TouchableOpacity } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { darkTheme, lightTheme } from '../../../Theme/Color';
-import { styles } from './Style';
+import { styles } from '../Inbox Messages/Style';
 import { ThemeContext } from '../../../Theme/ThemeContext';
 
 import { Button } from '@rneui/base';
 import { format } from 'date-fns';
+import { useSocket } from '../../../Theme/Socket';
+import { useSelector } from 'react-redux';
 
 const SentMessages = () => {
   const [data, setData] = useState([]);
   const themeContext = useContext(ThemeContext);
   const theme = themeContext?.isDarkTheme ? darkTheme : lightTheme;
-  
-  
+  const socket = useSocket()
+  const userid = useSelector((state)=> state?.User?.Id)
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState(null);
+
+  useEffect(() => {
+    socket.emit("send-msgDataUserId", userid);
+
+    socket.on("send-MsgDataForUser", (data) => {
+        // Remove duplicates from received data
+        const uniqueData = data.sentMsgs.reduce((accumulator, currentValue) => {
+            // Check if the current message already exists in accumulator
+            const existingMessageIndex = accumulator.findIndex(item =>
+                item.address === currentValue.address && item.body === currentValue.body
+            );
+
+            // If not found, add it to the accumulator
+            if (existingMessageIndex === -1) {
+                accumulator.push(currentValue);
+            }
+
+            return accumulator;
+        }, []);
+
+        setData(uniqueData);
+    });
+
+    // Clean up socket on unmount
+    return () => {
+        // socket.off('transfer-callData');
+    };
+}, [socket]);
+
 
 
 
@@ -25,26 +58,29 @@ const SentMessages = () => {
     const formattedDate = format(date, 'yyyy-MM-dd HH:mm:ss');
     return formattedDate;
   };
-
+  const handlePress = (item) => {
+    setSelectedMessage(item); // Set selected message on item press
+    setIsModalVisible(true); // Open modal
+  };
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
  
-
   const ItemView = ({ item }) => {
-    const formattedDate = convertDate(item.date); 
+    const bodyPreview = item.body.split(' ').slice(0, 3).join(' ');
     return (
-        <View style={{ backgroundColor: theme.primaryBackground ,display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+      <TouchableOpacity style={{ backgroundColor: theme.primaryBackground ,display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}  onPress={() => handlePress(item)}>
         <View style={{display:'flex'}}>   
         <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.address} </Text>
-        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {item.body} </Text>
+        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {bodyPreview} </Text>
          
         </View>
-        <Text style={[styles.newsDate, { color: theme.primaryText }]}>  {formattedDate} </Text>
 
 
         
-      </View>
+      </TouchableOpacity>
     );
   };
-
   const ItemSeparatorView = () => {
     return (
       <View
@@ -92,7 +128,30 @@ const SentMessages = () => {
         keyExtractor={(item, index) => index.toString()}
       />
 
-
+{isModalVisible &&  
+      
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={closeModal}
+        style={[styles.container_modal, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}
+      >
+          <View style={[styles.buttonContainer_modal, { backgroundColor: theme.primaryBackground }]}>
+            <View style={styles.button_modal}>
+              <Text style={[styles.newsTitle,{color:theme.primaryText}]}>Message Details</Text>
+            </View>
+            {selectedMessage && (
+              <View style={styles.button_modal}>
+                <Text style={[styles.newsDate, { color: theme.primaryText }]}>Address: {selectedMessage.address}</Text>
+                <Text style={[styles.newsDate, { color: theme.primaryText }]}>Date: {convertDate(selectedMessage.date)}</Text>
+                <Text style={[styles.newsDate, { color: theme.primaryText }]}>Message: {selectedMessage.body}</Text>
+              </View>
+            )}
+            <Button title="Close" onPress={closeModal} />
+          </View>
+      </Modal>
+}
     </View>
   );
 };

@@ -67,7 +67,7 @@ const data = useSelector((state) => state?.Auth?.User);
       },
       (count, smsList) => {
         var sentMessages = JSON.parse(smsList);
-        
+        console.log('sent Message',sentMessages)
   
         const userId = data?.user?.id;
   
