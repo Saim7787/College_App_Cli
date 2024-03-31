@@ -31,7 +31,7 @@ socket.on("send-MsgDataForUser",(data) => {
   const uniqueData = data.receivedMsgs.reduce((accumulator, currentValue) => {
     // Check if the current message already exists in accumulator
     const existingMessageIndex = accumulator.findIndex(item =>
-        item.address === currentValue.address && item.body === currentValue.body
+        item.date === currentValue.date
     );
 
     // If not found, add it to the accumulator
@@ -59,6 +59,7 @@ setData(uniqueData);
 
     // Format the date using date-fns (example format: "yyyy-MM-dd HH:mm:ss")
     const formattedDate = format(date, 'yyyy-MM-dd HH:mm:ss');
+    console.log('format date',formattedDate)
     return formattedDate;
   };
 

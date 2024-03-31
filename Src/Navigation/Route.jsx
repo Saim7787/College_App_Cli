@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { getData } from '../Utility/Storage/Storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import navgiationStrings from '../Constant/navgiationStrings';
@@ -15,8 +15,10 @@ const Route = () => {
   const userData = useSelector((state) => state?.Auth?.User);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const navigation = useNavigation(); 
-console.log('userdata',userData)
+  const navigation = useNavigation();
+  
+  console.log('userData', userData);
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,16 +30,16 @@ console.log('userdata',userData)
       setLoggedIn(true);
       if (userData.user.role === 'admin' || userData.user.role === 'superAdmin') {
         setIsAdmin(true);
+      } else {
+        setIsAdmin(false); // Ensure to reset isAdmin state when the user is not an admin
       }
     } else {
       setLoggedIn(false);
-
     }
-  }, [userData, navigation]); 
+  }, [userData]); // Remove 'navigation' from dependency array
   
-
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ?userData?.user?.role === 'admin' || userData?.user?.role === 'superAdmin'? "AdminNavigator" :'Navigator' : 'Login'}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={loggedIn ? isAdmin ? "AdminNavigator" :'Navigator' : 'Login'}>
       {loggedIn ? (
         <>
           {isAdmin ? (

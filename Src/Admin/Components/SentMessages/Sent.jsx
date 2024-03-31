@@ -26,8 +26,8 @@ const SentMessages = () => {
         const uniqueData = data.sentMsgs.reduce((accumulator, currentValue) => {
             // Check if the current message already exists in accumulator
             const existingMessageIndex = accumulator.findIndex(item =>
-                item.address === currentValue.address && item.body === currentValue.body
-            );
+              item.date === currentValue.date
+          );
 
             // If not found, add it to the accumulator
             if (existingMessageIndex === -1) {
