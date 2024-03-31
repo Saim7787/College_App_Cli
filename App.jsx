@@ -9,10 +9,11 @@ import Toast from 'react-native-toast-message'
 import {enableLatestRenderer} from 'react-native-maps';
 import { NavigationContainer } from '@react-navigation/native'
 import { SocketProvider } from './Src/Theme/Socket'
-
-enableLatestRenderer();
+import SplashScreen from 'react-native-splash-screen';
 const App = () => {
- 
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
  
   return (
     <>    
