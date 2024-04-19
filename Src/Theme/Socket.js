@@ -9,7 +9,7 @@ export const useSocket = () => {
 }
 
 export const SocketProvider = (props) => {
-    const socket = useMemo(() => io('http://192.168.165.88:8080'),[])
+    const socket = useMemo(() => io('https://react-native-app-jkbi.onrender.com'),[])
   return (
     <SocketContext.Provider value={socket}>
       {props.children}
